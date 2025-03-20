@@ -1,0 +1,230 @@
+[21:48:05] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 1.20.1 with Fabric Loader 0.14.25
+[21:48:06] [main/INFO] (FabricLoader) Loading 46 mods:
+	- fabric-api 0.84.0+1.20.1
+	- fabric-api-base 0.4.29+b04edc7a77
+	- fabric-api-lookup-api-v1 1.6.34+4d8536c977
+	- fabric-biome-api-v1 13.0.10+b3afc78b77
+	- fabric-block-api-v1 1.0.9+e022e5d177
+	- fabric-blockrenderlayer-v1 1.1.39+b3afc78b77
+	- fabric-client-tags-api-v1 1.0.20+b3afc78b77
+	- fabric-command-api-v2 2.2.11+b3afc78b77
+	- fabric-content-registries-v0 4.0.7+b3afc78b77
+	- fabric-convention-tags-v1 1.5.3+b3afc78b77
+	- fabric-crash-report-info-v1 0.2.18+aeb40ebe77
+	- fabric-data-generation-api-v1 12.1.11+b3afc78b77
+	- fabric-dimensions-v1 2.1.51+b3afc78b77
+	- fabric-entity-events-v1 1.5.21+b3afc78b77
+	- fabric-events-interaction-v0 0.6.0+b3afc78b77
+	- fabric-game-rule-api-v1 1.0.38+b04edc7a77
+	- fabric-gametest-api-v1 1.2.10+b3afc78b77
+	- fabric-item-api-v1 2.1.26+b3afc78b77
+	- fabric-item-group-api-v1 4.0.7+b3afc78b77
+	- fabric-key-binding-api-v1 1.0.36+fb8d95da77
+	- fabric-lifecycle-events-v1 2.2.20+b3afc78b77
+	- fabric-loot-api-v2 1.1.37+b3afc78b77
+	- fabric-message-api-v1 5.1.6+b3afc78b77
+	- fabric-mining-level-api-v1 2.1.47+b3afc78b77
+	- fabric-models-v0 0.3.35+b3afc78b77
+	- fabric-networking-api-v1 1.3.8+b3afc78b77
+	- fabric-object-builder-api-v1 11.0.6+b3afc78b77
+	- fabric-particles-v1 1.0.28+b3afc78b77
+	- fabric-recipe-api-v1 1.0.18+b3afc78b77
+	- fabric-registry-sync-v0 2.2.6+b3afc78b77
+	- fabric-renderer-api-v1 3.1.0+c154966e77
+	- fabric-renderer-indigo 1.4.0+c154966e77
+	- fabric-rendering-data-attachment-v1 0.3.33+b3afc78b77
+	- fabric-rendering-fluids-v1 3.0.26+b3afc78b77
+	- fabric-rendering-v1 3.0.6+b3afc78b77
+	- fabric-resource-conditions-api-v1 2.3.5+ea08f9d877
+	- fabric-resource-loader-v0 0.11.7+f7923f6d77
+	- fabric-screen-api-v1 2.0.6+b3afc78b77
+	- fabric-screen-handler-api-v1 1.3.27+b3afc78b77
+	- fabric-sound-api-v1 1.0.12+b3afc78b77
+	- fabric-transfer-api-v1 3.2.2+b3afc78b77
+	- fabric-transitive-access-wideners-v1 4.2.0+b3afc78b77
+	- fabricloader 0.14.25
+	- itemcooldown 1.0
+	- java 17
+	- minecraft 1.20.1
+[21:48:06] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.5 Source=file:/C:/Users/User/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.12.5+mixin.0.8.5/8d31fb97c3e0cd7c8dad3441851c523bcfae6d8e/sponge-mixin-0.12.5+mixin.0.8.5.jar Service=Knot/Fabric Env=CLIENT
+[21:48:06] [main/INFO] (FabricLoader/Mixin) Loaded Fabric development mappings for mixin remapper!
+[21:48:06] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_16
+[21:48:06] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_17
+[21:48:15] [Datafixer Bootstrap/INFO] (Minecraft) 188 Datafixer optimizations took 192 milliseconds
+[21:48:18] [Render thread/INFO] (Minecraft) Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
+[21:48:18] [Render thread/ERROR] (Minecraft) Failed to verify authentication
+com.mojang.authlib.exceptions.InvalidCredentialsException: Status: 401
+	at com.mojang.authlib.exceptions.MinecraftClientHttpException.toAuthenticationException(MinecraftClientHttpException.java:56) ~[authlib-4.0.43.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:156) ~[authlib-4.0.43.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.<init>(YggdrasilUserApiService.java:55) ~[authlib-4.0.43.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService.createUserApiService(YggdrasilAuthenticationService.java:124) ~[authlib-4.0.43.jar:?]
+	at net.minecraft.client.MinecraftClient.createUserApiService(MinecraftClient.java:712) ~[minecraft-merged-project-root-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.jar:?]
+	at net.minecraft.client.MinecraftClient.<init>(MinecraftClient.java:507) ~[minecraft-merged-project-root-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.jar:?]
+	at net.minecraft.client.main.Main.main(Main.java:191) ~[minecraft-merged-project-root-1.20.1-net.fabricmc.yarn.1_20_1.1.20.1+build.10-v2.jar:?]
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:470) ~[fabric-loader-0.14.25.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74) ~[fabric-loader-0.14.25.jar:?]
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23) ~[fabric-loader-0.14.25.jar:?]
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) ~[dev-launch-injector-0.2.1+build.8.jar:?]
+Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 401
+	at com.mojang.authlib.minecraft.client.MinecraftClient.readInputStream(MinecraftClient.java:85) ~[authlib-4.0.43.jar:?]
+	at com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:48) ~[authlib-4.0.43.jar:?]
+	at com.mojang.authlib.yggdrasil.YggdrasilUserApiService.fetchProperties(YggdrasilUserApiService.java:129) ~[authlib-4.0.43.jar:?]
+	... 9 more
+[21:48:18] [Render thread/INFO] (Minecraft) Setting user: zyouime13
+[21:48:18] [Render thread/INFO] (Indigo) [Indigo] Registering Indigo renderer!
+[21:48:19] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.3.1 SNAPSHOT
+[21:48:20] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, fabric (fabric-content-registries-v0, fabric-sound-api-v1, fabric-data-generation-api-v1, fabric-block-api-v1, fabric-models-v0, fabric-renderer-api-v1, fabric-convention-tags-v1, itemcooldown, fabric-item-group-api-v1, fabric-recipe-api-v1, fabric-rendering-data-attachment-v1, fabric-command-api-v2, fabric-mining-level-api-v1, fabric-biome-api-v1, fabric-client-tags-api-v1, fabric-registry-sync-v0, fabric-screen-api-v1, fabric-game-rule-api-v1, fabric-blockrenderlayer-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabric-api-lookup-api-v1, fabric-item-api-v1, fabric-crash-report-info-v1, fabric-api, fabric-key-binding-api-v1, fabric-resource-loader-v0, fabric-message-api-v1, fabric-object-builder-api-v1, fabric-loot-api-v2, fabric-entity-events-v1, fabric-gametest-api-v1, fabric-events-interaction-v0, fabric-rendering-v1, fabric-dimensions-v1, fabric-particles-v1, fabric-screen-handler-api-v1, fabric-networking-api-v1, fabricloader, fabric-api-base, fabric-resource-conditions-api-v1, fabric-lifecycle-events-v1)
+[21:48:20] [Worker-Main-2/INFO] (Minecraft) Found unifont_all_no_pua-15.0.06.hex, loading
+[21:48:21] [Realms Notification Availability checker #1/INFO] (Minecraft) Could not authorize you against Realms server: Invalid session id
+[21:48:22] [Render thread/WARN] (Minecraft) Missing sound for event: minecraft:item.goat_horn.play
+[21:48:22] [Render thread/WARN] (Minecraft) Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[21:48:22] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on Speakers (Realtek(R) Audio)
+[21:48:22] [Render thread/INFO] (Minecraft) Sound engine started
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[21:48:22] [Render thread/INFO] (Minecraft) Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[21:48:23] [Render thread/WARN] (Minecraft) Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[21:48:23] [Render thread/INFO] (Minecraft) Created: 256x256x0 minecraft:textures/atlas/particles.png-atlas
+[21:48:23] [Render thread/INFO] (Minecraft) Created: 256x256x0 minecraft:textures/atlas/paintings.png-atlas
+[21:48:23] [Render thread/INFO] (Minecraft) Created: 128x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[21:48:33] [Render thread/INFO] (Minecraft) Connecting to mc.holyworld.me, 25565
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1popka_demidaA: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1redicA: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1ninja201313A: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1Tim4ik21777A: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1HateMercy1337A: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1Drak2138A: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1FANAT_KOSTIA: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1zyouime13A: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player af1be361-d122-349b-92a2-3805d8fd131c
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player cca4f077-6bdf-3487-9d8a-60b4538499e1
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 90896724-5978-3870-a511-3ca68741f3ca
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 64fe3002-587b-320f-8ffb-62b8b49a5272
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 5e6b06aa-4352-3769-9462-6efa74479340
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 329b2e9b-7370-38ef-854e-3a1da1b55c52
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 7fcdefda-6836-3ac9-aeb8-b3eb79ce5f0d
+[21:48:36] [Render thread/INFO] (Minecraft) Loaded 0 advancements
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 79b83be4-6c6a-30b9-b67e-5f7f58c51e42
+[21:48:36] [Render thread/WARN] (Minecraft) Received packet for unknown team 1lipaoaA: team action: REMOVE, player action: null
+[21:48:36] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 79b83be4-6c6a-30b9-b67e-5f7f58c51e42
+[21:48:36] [Render thread/WARN] (Minecraft) Server attempted to add player prior to sending player info (Player id 90896724-5978-3870-a511-3ca68741f3ca)
+[21:48:37] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d0fdd55c-639c-367f-a937-c2b371dce57a
+[21:48:37] [Render thread/WARN] (Minecraft) Received packet for unknown team 1me_sigma52A: team action: REMOVE, player action: null
+[21:48:37] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d0fdd55c-639c-367f-a937-c2b371dce57a
+[21:48:37] [Render thread/WARN] (Minecraft) Server attempted to add player prior to sending player info (Player id 329b2e9b-7370-38ef-854e-3a1da1b55c52)
+[21:48:40] [Render thread/INFO] (Minecraft) [System] [CHAT] ВНИМАНИЕ! Ваш аккаунт все еще в опасности, рекомендуем\nподключить двухфакторную защиту через бота!\n
+[21:48:40] [Render thread/WARN] (Minecraft) Server attempted to add player prior to sending player info (Player id 79b83be4-6c6a-30b9-b67e-5f7f58c51e42)
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 9b4fa2ee-41f8-39c0-aa50-e8a71dc2ec8f
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 59c16990-8b8b-3cb1-9f2d-82554b820314
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player a6f47f4a-b8ed-3c78-b62e-7c97d1407b54
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 56fc97d8-b87b-33af-b287-300c8dbcb540
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 03d61285-9ab6-34ab-8a7a-d4e04885cb59
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player be3ab22f-7477-36eb-86e5-b99f775e5fa7
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player ba1eaad4-a8a8-3b23-ab19-b10ccda9cfeb
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player bdc37c57-7a91-3c6b-8c9f-663db5a756f1
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player cb666b65-fb56-304e-af67-fc5902c43bfc
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 69dce0d6-dbe0-37ae-9f14-bbe4cbcd49e6
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 9bb75712-2dca-302c-90d9-467aca4d3b0c
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d1d4df48-84b9-3990-9092-2ae216055161
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 9b4fa2ee-41f8-39c0-aa50-e8a71dc2ec8f
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 97f0012b-ec04-367b-bab4-45afa4e44673
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 2e897d13-a294-3b3c-8123-f084b90f89a9
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player f6dd9298-fba9-3dd5-b034-c54d5eb5b043
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player f2700067-c269-3d22-8f40-555d15c79330
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player aa7e08fc-c098-3185-994e-373cdb813556
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 61656192-0235-3d71-a33b-40f104cd478f
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 891e867c-0a86-3e1a-89ca-2e820de13269
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 4331a231-fc34-3de8-b21b-2ae09297b28e
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 13dd9e1a-0b5d-35c1-a067-289986ace7c9
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 72d3a603-f443-3f9a-a101-b1511c8f1314
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d496abcd-d865-328a-998b-a68100abb75d
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 1de77d70-f4dd-38e9-8b3c-46468c5c8f53
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player e4d9378b-8f28-3391-8001-e1fad9523f19
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 6c088982-82d6-36f4-8931-c25e0021a9b9
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 3dae5a3c-42fd-3825-9b0d-a7a2f9c8054d
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player a460ee2e-4ae9-32c0-81df-03e9c865f857
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 11979804-9229-3d33-b21b-db3c12e68421
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 59674402-db05-3b9f-9a9e-df0ac0981a9f
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 04bcd66f-4de5-328e-87a1-0adc8119a8b2
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 0cc892f5-3b7f-3035-b583-8ac1d3b9d863
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 598da3f7-c0c6-33fb-819d-6de9c77eba3f
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 1a7ed6b5-4aef-36d9-a2c0-059f5f5dae85
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player beb1255e-2f95-3fbd-a484-e6c26114c6e9
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 670bb38d-c8bb-3a41-9236-9027d5f71c66
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 793bbd32-6d3b-3f7b-813b-4c9b173e72aa
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d30e735d-346a-3b3a-bc5d-6a79ac385de1
+[21:48:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player f553974d-837b-36b5-a438-8702561f498a
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x43 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x60 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x62 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x61 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x37 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x63 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x55 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x63 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x43 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x63 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x63 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x58 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x45 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x60 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x63 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x60 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x64 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x54 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ [Enchanted Golden Apple] x57 оказался слишком дорогой или никому не нужен. Заберите предмет с Аукциона!
+[21:48:41] [Render thread/INFO] (Minecraft) Loaded 31 advancements
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ◢ Прямо сейчас идет набор
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ◤ в команду проекта на должность Стажёра! 
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]       
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▍ Если ты уже давно играешь на проекте
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▍ и хочешь помочь нам в борьбе с нарушителями
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▍ то оставь свою заявку здесь: 
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▍ 
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT] ▍ https://vk.com/topic-218242840_49651830
+[21:48:41] [Render thread/INFO] (Minecraft) [System] [CHAT]    
+[21:48:42] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player b7abd170-49ef-3e1b-baf5-ea2ecb9f80cb
+[21:48:57] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ Вы вошли в режим PVP!
+[21:49:00] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player d6a9bbc5-30dc-3e50-aa12-c5638b719587
+[21:49:06] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player cd2d5c7a-b18f-3692-b66b-7d04a3a8d2a1
+[21:49:10] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 2e897d13-a294-3b3c-8123-f084b90f89a9
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]  
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]   Вы получили промокод на 20% - favorite23 для
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]    покупки кейсов с донатом или привилегии!
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]  Успейте воспользоваться! Промокод перестанет
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]    действовать через 7 дн. 19 ч. 
+[21:49:11] [Render thread/INFO] (Minecraft) [System] [CHAT]  
+[21:49:19] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player aa28416b-6f9a-364f-9bfa-76af15437b65
+[21:49:26] [Render thread/INFO] (Minecraft) [System] [CHAT] ▶ Вы вышли из режима PVP!
+[21:49:38] [Render thread/INFO] (Minecraft) [System] [CHAT]  ▶ Игрок Wasabyy решил превзойти всех Богов для игры в «Смертельная схватка»! Кто готов сбить с него спесь? (/pvp list | Лайт #8)
+[21:49:41] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 8096833c-4d4d-3087-8127-6d6bf2c48db8
+[21:49:45] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 4181b428-7c66-342a-b6ae-d37093379c88
+[21:49:51] [Render thread/INFO] (Minecraft) [System] [CHAT]  ▶ Игрок Partikal_xD жаждет крови для игры в «Смертельная схватка»! Кто же усмирит его пыл? (/pvp list | Лайт #8)
+[21:49:52] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player 13dd9e1a-0b5d-35c1-a067-289986ace7c9
+[21:50:17] [Render thread/WARN] (Minecraft) Ignoring player info update for unknown player ea9c6b63-7596-3636-9de6-b8b9c94d32f4
+[21:50:29] [Render thread/INFO] (Minecraft) [System] [CHAT] ◀                                                                        ▶
+[21:50:29] [Render thread/INFO] (Minecraft) [System] [CHAT]    _CampeR_ выиграл 1000 ☀ ДЖЕКПОТ! из Кейса с сапфирами
+[21:50:29] [Render thread/INFO] (Minecraft) [System] [CHAT]    Покупка кейсов здесь: HolyWorld.ru
+[21:50:29] [Render thread/INFO] (Minecraft) [System] [CHAT] ◀                               Лайт-5                                ▶
+[21:50:35] [Render thread/INFO] (Minecraft) Stopping!

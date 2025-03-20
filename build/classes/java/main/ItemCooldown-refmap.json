@@ -1,0 +1,24 @@
+{
+  "mappings": {
+    "me/zyouime/itemcooldown/mixin/ClientPlayNetworkHandlerMixin": {
+      "onCooldownUpdate": "Lnet/minecraft/class_634;method_11087(Lnet/minecraft/class_2656;)V",
+      "onInventory": "Lnet/minecraft/class_634;method_11153(Lnet/minecraft/class_2649;)V"
+    },
+    "me/zyouime/itemcooldown/mixin/LivingEntityMixin": {
+      "Lnet/minecraft/item/ItemStack;finishUsing(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;": "Lnet/minecraft/class_1799;method_7910(Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;",
+      "consumeItem": "Lnet/minecraft/class_1309;method_6040()V"
+    }
+  },
+  "data": {
+    "named:intermediary": {
+      "me/zyouime/itemcooldown/mixin/ClientPlayNetworkHandlerMixin": {
+        "onCooldownUpdate": "Lnet/minecraft/class_634;method_11087(Lnet/minecraft/class_2656;)V",
+        "onInventory": "Lnet/minecraft/class_634;method_11153(Lnet/minecraft/class_2649;)V"
+      },
+      "me/zyouime/itemcooldown/mixin/LivingEntityMixin": {
+        "Lnet/minecraft/item/ItemStack;finishUsing(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;": "Lnet/minecraft/class_1799;method_7910(Lnet/minecraft/class_1937;Lnet/minecraft/class_1309;)Lnet/minecraft/class_1799;",
+        "consumeItem": "Lnet/minecraft/class_1309;method_6040()V"
+      }
+    }
+  }
+}

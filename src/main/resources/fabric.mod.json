@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "itemcooldown",
+  "version": "${version}",
+  "name": "ItemCooldown",
+  "description": "",
+  "authors": ["zyouime13"],
+  "contact": {
+  },
+  "license": "MIT",
+  "icon": "assets/itemcooldown/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "me.zyouime.itemcooldown.ItemCooldown"
+    ]
+  },
+  "mixins": [
+    "itemcooldown.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
