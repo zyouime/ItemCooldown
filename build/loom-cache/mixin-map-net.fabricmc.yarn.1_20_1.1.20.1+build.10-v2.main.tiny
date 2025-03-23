@@ -1,2 +1,0 @@
-v1	named	intermediary
-FIELD	me/zyouime/itemcooldown/mixin/LivingEntityMixin	Lnet/minecraft/item/ItemStack;	activeItemStack	field_6277

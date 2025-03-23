@@ -1,19 +1,45 @@
 package me.zyouime.itemcooldown.config;
 
-import me.zyouime.itemcooldown.item.ItemCooldownStatus;
+import com.google.gson.annotations.Expose;
+import me.zyouime.itemcooldown.item.AbstractItemCooldown;
+import me.zyouime.itemcooldown.item.CustomItemCooldown;
+import me.zyouime.itemcooldown.item.VanillaItemCooldown;
+import me.zyouime.itemcooldown.util.ItemNbt;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigData {
 
+    @Expose
     float scale = 2f;
-    VPos verticalPos = VPos.TOP;
-    List<ItemCooldownStatus> items = new ArrayList<>();
+    @Expose
+    Map<String, List<AbstractItemCooldown>> items = new HashMap<>();
+    @Expose
+    String selectedCategory = "HolyWorld";
 
     public ConfigData() {
-
+        List<AbstractItemCooldown> holyWorldItems = new ArrayList<>();
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE), -50, -100, true));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.PRISMARINE_SHARD), -25, -100, false));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.POPPED_CHORUS_FRUIT), 0, -100, false));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.NETHER_STAR), 25, -100, false));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.SNOWBALL), 50, -100, false));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.GOLDEN_APPLE), -50, -70, true));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.CHORUS_FRUIT), 15, -25, -70, true));
+        holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.ENDER_PEARL),0, -70, false));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.FIRE_CHARGE), 60 , 25,  -70, ItemNbt.FIRE_CHARGE));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.POTION), 150, 50, -70,  ItemNbt.LONG_TURTLE_MASTER));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.EXPERIENCE_BOTTLE), 600, -50, -40, ItemNbt.EXP_BOTTLE));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.POTION), 300, -25, -40, ItemNbt.WIN_POTION, false, true));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.FIREWORK_STAR), 30, 0, -40, ItemNbt.FAREWELL_HUM));
+        holyWorldItems.add(new CustomItemCooldown(new ItemStack(Items.POTION), 10, 25, -40, ItemNbt.STRONG_HEALING_POTION));
+        items.put("HolyWorld", holyWorldItems);
     }
 
     public void setField(String fieldName, Object value) {
@@ -35,17 +61,5 @@ public class ConfigData {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public enum VPos {
-        TOP,
-        CENTER,
-        BOTTOM
-    }
-
-    public enum HPos {
-        LEFT,
-        MIDDLE,
-        RIGHT
     }
 }

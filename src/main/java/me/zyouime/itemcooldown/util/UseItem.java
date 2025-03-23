@@ -4,4 +4,6 @@ import net.minecraft.item.ItemStack;
 
 public interface UseItem {
     ItemStack getItem();
+
+    void clearItem();
 }

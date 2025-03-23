@@ -2,7 +2,13 @@ package me.zyouime.itemcooldown.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.zyouime.itemcooldown.config.adapter.NbtCompoundTypeAdapter;
+import me.zyouime.itemcooldown.config.adapter.RuntimeTypeAdapterFactory;
+import me.zyouime.itemcooldown.item.AbstractItemCooldown;
+import me.zyouime.itemcooldown.item.CustomItemCooldown;
+import me.zyouime.itemcooldown.item.VanillaItemCooldown;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.nbt.NbtCompound;
 
 import java.io.File;
 import java.io.FileReader;
@@ -11,7 +17,16 @@ import java.io.IOException;
 
 public class ModConfig {
     private static final File FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "itemcooldown.json");
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder()
+            .setPrettyPrinting()
+            .registerTypeAdapter(NbtCompound.class, new NbtCompoundTypeAdapter())
+            .registerTypeAdapterFactory(RuntimeTypeAdapterFactory
+                    .of(AbstractItemCooldown.class)
+                    .registerSubtype(VanillaItemCooldown.class)
+                    .registerSubtype(CustomItemCooldown.class))
+            .excludeFieldsWithoutExposeAnnotation()
+            .create();
+
     public static ConfigData configData;
 
     public static void loadConfig() {

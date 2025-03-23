@@ -1,8 +1,10 @@
 package me.zyouime.itemcooldown.mixin;
 
 import me.zyouime.itemcooldown.util.UseItem;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,18 +17,37 @@ public abstract class LivingEntityMixin implements UseItem {
 
     @Shadow
     protected ItemStack activeItemStack;
-
+    @Shadow public abstract ItemStack getStackInHand(Hand hand);
     @Unique
     private ItemStack prevItem;
+    @Unique
+    private LivingEntity livingEntity = (LivingEntity) (Object) this;
 
     @Inject(method = "consumeItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;finishUsing(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;", shift = At.Shift.BEFORE))
-    private void checkBeforeUse(CallbackInfo ci) {
-        this.prevItem = activeItemStack.copy();
-        System.out.println("SAVED!");
+    private void consumeItem(CallbackInfo ci) {
+        if (isClientPlayer()) {
+            this.prevItem = this.activeItemStack.copy();
+        }
+    }
+
+    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("RETURN"))
+    private void swingHand(Hand hand, CallbackInfo ci) {
+        if (isClientPlayer()) {
+            this.prevItem = this.getStackInHand(hand).copy();
+        }
+    }
+
+    private boolean isClientPlayer() {
+        return livingEntity instanceof ClientPlayerEntity;
     }
 
     @Override
     public ItemStack getItem() {
         return this.prevItem;
+    }
+
+    @Override
+    public void clearItem() {
+        this.prevItem = null;
     }
 }
