@@ -26,7 +26,7 @@ public class MainScreen extends Screen implements Wrapper {
     @Override
     protected void init() {
         ItemsListWidget itemsList = new ItemsListWidget(client, this.width, this.height, 96, this.height - 64, 30);
-        for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
+        for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
             ItemElement element = new ItemElement(item, this);
             element.init();
             itemsList.addEntry(new ItemsListWidget.Elements(element));
