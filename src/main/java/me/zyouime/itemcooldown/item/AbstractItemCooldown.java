@@ -20,7 +20,7 @@ import java.util.Objects;
 public class AbstractItemCooldown {
 
     @Expose
-    private String item;
+    private ItemStack item;
     @Expose
     private int maxCooldown;
     @Expose
@@ -34,7 +34,7 @@ public class AbstractItemCooldown {
     private int cooldown;
 
     protected AbstractItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean resetWhenNoFightMode, boolean setWhenNoFightMode, boolean canUseWhenNoFightMode) {
-        this.item = Registries.ITEM.getId(item.getItem()).toString();
+        this.item = item;
         this.maxCooldown = maxCooldown * 20;
         this.x = x;
         this.y = y;
@@ -47,29 +47,37 @@ public class AbstractItemCooldown {
         MatrixStack matrixStack = context.getMatrices();
         ConfigData configData = ModConfig.configData;
         float scale = (float) configData.getField("scale");
-        float scaledCenterX = context.getScaledWindowWidth() / 2f / scale;
-        float scaledCenterY = context.getScaledWindowHeight() / 2f / scale;
+        float sWidth = context.getScaledWindowWidth();
+        float sHeight = context.getScaledWindowHeight();
+        float centerX = sWidth / 2f;
+        float centerY = sHeight / 2f;
+        float maxX = (sWidth / scale) - 20;
+        float maxY = (sHeight / scale) - 24;
+        float renderX = Math.max(0, Math.min(centerX / scale + x, maxX));
+        float renderY = Math.max(0, Math.min(centerY / scale + y, maxY));
         matrixStack.push();
         matrixStack.scale(scale, scale, 1.0f);
-        RenderHelper.drawRoundedRect(matrixStack, scaledCenterX + x, scaledCenterY + y, 20, 24, 3, this.getBackgroundColor());
-        RenderHelper.drawItem(context, this.getItem(), scaledCenterX + (x + 2), scaledCenterY +  (y + 1));
+        RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
+        RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
         String text = (cooldown / 20) + " сек";
         float textScale = scale / 4.44f;
-        float textX = scaledCenterX + (x + (20 - RenderHelper.textRenderer.getWidth(text) * textScale) / 2);
-        RenderHelper.drawCenteredYText(context, textX, scaledCenterY + (y + 14), textScale, text, Color.YELLOW);
+        float textX = renderX + (20 - RenderHelper.textRenderer.getWidth(text) * textScale) / 2;
+        RenderHelper.drawCenteredYText(context, textX, renderY + 14, textScale, text, Color.YELLOW);
         matrixStack.pop();
     }
+
 
     public void tick() {
         --cooldown;
     }
 
     public ItemStack getItem() {
-        return Registries.ITEM.get(new Identifier(item)).getDefaultStack();
+        return this.item;
     }
 
-    public void setItem(String item) {
-        this.item = item;
+    public ItemStack setCount(int count) {
+        this.item.setCount(count);
+        return this.item;
     }
 
     public int getMaxCooldown() {
@@ -100,6 +108,11 @@ public class AbstractItemCooldown {
         this.y = y;
     }
 
+    public void updatePos(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getCooldown() {
         return cooldown;
     }
@@ -108,24 +121,15 @@ public class AbstractItemCooldown {
         this.cooldown = cooldown;
     }
 
+    public void setMaxCooldown(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
+    }
+
     private Color getBackgroundColor() {
         if (canUseWhenNoFightMode && !EventManager.isPvP()) {
             return new Color(0, 255, 0, 96);
         }
         return new Color(0, 0, 0, 96);
     }
-
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(item);
-//    }
-//
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (this == obj) return true;
-//        if (obj == null || getClass() != obj.getClass()) return false;
-//        AbstractItemCooldown cooldownItem = (AbstractItemCooldown) obj;
-//        return Objects.equals(this.item, cooldownItem.item);
-//    }
 
 }
