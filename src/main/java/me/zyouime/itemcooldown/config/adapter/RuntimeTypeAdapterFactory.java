@@ -32,15 +32,6 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
         this.maintainType = maintainType;
     }
 
-    public static <T> RuntimeTypeAdapterFactory<T> of(
-            Class<T> baseType, String typeFieldName, boolean maintainType) {
-        return new RuntimeTypeAdapterFactory<>(baseType, typeFieldName, maintainType);
-    }
-
-    public static <T> RuntimeTypeAdapterFactory<T> of(Class<T> baseType, String typeFieldName) {
-        return new RuntimeTypeAdapterFactory<>(baseType, typeFieldName, false);
-    }
-
     public static <T> RuntimeTypeAdapterFactory<T> of(Class<T> baseType) {
         return new RuntimeTypeAdapterFactory<>(baseType, "type", false);
     }

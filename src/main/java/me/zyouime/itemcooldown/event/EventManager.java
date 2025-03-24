@@ -3,6 +3,7 @@ package me.zyouime.itemcooldown.event;
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
+import me.zyouime.itemcooldown.util.Wrapper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -18,16 +19,15 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
-public class EventManager {
+public class EventManager implements Wrapper {
 
-    private static final ItemCooldown ic = ItemCooldown.getInstance();
     private static long fightTimer;
     private static final MinecraftClient client = MinecraftClient.getInstance();
 
     private static void hudRenderEvent() {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
             if (client.currentScreen instanceof ChatScreen) return;
-            for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
+            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 if (item.getCooldown() > 0) {
                     item.render(drawContext);
                 }
@@ -37,7 +37,7 @@ public class EventManager {
 
     private static void tickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
+            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
                 if (item.isResetWhenNoFightMode() && !isPvP()) {
                     item.setCooldown(0);
@@ -57,7 +57,7 @@ public class EventManager {
 
     private static void joinEvent() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
+            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 item.setCooldown(0);
             }
         });

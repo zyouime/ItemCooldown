@@ -5,17 +5,11 @@ import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 
 import java.awt.*;
-import java.util.Objects;
 
 public class AbstractItemCooldown {
 
@@ -119,10 +113,6 @@ public class AbstractItemCooldown {
 
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
-    }
-
-    public void setMaxCooldown(int maxCooldown) {
-        this.maxCooldown = maxCooldown;
     }
 
     private Color getBackgroundColor() {

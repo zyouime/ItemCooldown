@@ -96,14 +96,14 @@ public abstract class ChatScreenMixin extends Screen {
             ModConfig.loadConfig();
             ConfigData configData = ModConfig.configData;
             Map<String, List<AbstractItemCooldown>> savedMap = (Map<String, List<AbstractItemCooldown>>) configData.getField("items");
-            List<AbstractItemCooldown> changedPosItem = savedMap.get(ic.currentCategory);
-            for (AbstractItemCooldown item : changedPosItem) {
+            List<AbstractItemCooldown> configItems = savedMap.get(ic.currentCategory);
+            for (AbstractItemCooldown item : configItems) {
                 if (ItemStack.areItemsEqual(item.getItem(), draggingItem.getItem())) {
                     item.updatePos(this.x, this.y);
                     break;
                 }
             }
-            savedMap.put(ic.currentCategory, changedPosItem);
+            savedMap.put(ic.currentCategory, configItems);
             configData.setField("items", savedMap);
             ModConfig.saveConfig();
         }

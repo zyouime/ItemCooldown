@@ -5,6 +5,7 @@ import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import me.zyouime.itemcooldown.util.UseItem;
+import me.zyouime.itemcooldown.util.Wrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,18 +22,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public abstract class ClientPlayNetworkHandlerMixin {
-
-    @Unique
-    private final ItemCooldown ic = ItemCooldown.getInstance();
+public abstract class ClientPlayNetworkHandlerMixin implements Wrapper {
 
     @Inject(method = "onCooldownUpdate", at = @At("RETURN"))
     private void onCooldownUpdate(CooldownUpdateS2CPacket packet, CallbackInfo ci) {
         int cooldown = packet.getCooldown();
         Item item = packet.getItem();
-        List<AbstractItemCooldown> list = ic.cooldownItems().get(ic.currentCategory);
         if (cooldown > 0) {
-            list.forEach(ct -> {
+            cooldownItems.get(ic.currentCategory).forEach(ct -> {
                 if (ct instanceof VanillaItemCooldown vic) {
                     if (vic.getItem().getItem().equals(item)) {
                         if (vic.getCooldown() < cooldown) vic.setCooldown(cooldown);

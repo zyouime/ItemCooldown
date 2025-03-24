@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.CustomItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
+import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.util.ItemNbt;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -21,9 +22,14 @@ public class ConfigData {
     @Expose
     Map<String, List<AbstractItemCooldown>> items = new HashMap<>();
     @Expose
+    List<CategoryElement> categories = new ArrayList<>();
+    @Expose
     String selectedCategory = "HolyWorld";
 
     public ConfigData() {
+        categories.add(new CategoryElement("HolyWorld"));
+        categories.add(new CategoryElement("FunTime"));
+        categories.add(new CategoryElement("Custom"));
         List<AbstractItemCooldown> holyWorldItems = new ArrayList<>();
         holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.ENCHANTED_GOLDEN_APPLE), -50, -100, true));
         holyWorldItems.add(new VanillaItemCooldown(new ItemStack(Items.PRISMARINE_SHARD), -25, -100, false));
