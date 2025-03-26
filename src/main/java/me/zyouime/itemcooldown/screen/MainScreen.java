@@ -26,12 +26,14 @@ public class MainScreen extends Screen implements Wrapper {
     @Override
     protected void init() {
         ItemsListWidget itemsList = new ItemsListWidget(client, this.width, this.height, 96, this.height - 64, 30);
-        for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
-            ItemElement element = new ItemElement(item, this);
-            element.init();
-            itemsList.addEntry(new ItemsListWidget.Elements(element));
+        if (cooldownItems.get(ic.currentCategory) != null) {
+            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
+                ItemElement element = new ItemElement(item, this);
+                element.init();
+                itemsList.addEntry(new ItemsListWidget.Elements(element));
+            }
         }
-        CategoriesListWidget categoriesList = new CategoriesListWidget(client, 80, this.height, 12, 96, 30);
+        CategoriesListWidget categoriesList = new CategoriesListWidget(client, 80, this.height, 12, 96, 30, this);
         categoriesList.setLeftPos(width / 2 - 40);
         for (CategoryElement element : categories) {
             categoriesList.addEntry(new CategoriesListWidget.Elements(new CategoryElement(element.getCategory())));
@@ -60,6 +62,11 @@ public class MainScreen extends Screen implements Wrapper {
     @Override
     public void close() {
         client.setScreen(parent);
+    }
+
+    @Override
+    public void clearAndInit() {
+        super.clearAndInit();
     }
 
     public MinecraftClient getClient() {

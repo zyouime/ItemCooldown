@@ -27,11 +27,6 @@ public class ItemCooldownScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
-        String s;
-        if (item == null) {
-            s = "Тут будет меню добавление предмета";
-        } else s = "Тут будет меню редактирования уже существующих";
-        RenderHelper.drawCenteredXYText(context, width / 2f, height / 2f, 1.0f, s, Color.PINK);
         super.render(context, mouseX, mouseY, delta);
     }
 

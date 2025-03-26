@@ -27,6 +27,7 @@ public class EventManager implements Wrapper {
     private static void hudRenderEvent() {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
             if (client.currentScreen instanceof ChatScreen) return;
+            if (cooldownItems.get(ic.currentCategory) == null) return;
             for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 if (item.getCooldown() > 0) {
                     item.render(drawContext);
@@ -37,6 +38,7 @@ public class EventManager implements Wrapper {
 
     private static void tickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (cooldownItems.get(ic.currentCategory) == null) return;
             for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
                 if (item.isResetWhenNoFightMode() && !isPvP()) {
@@ -57,6 +59,7 @@ public class EventManager implements Wrapper {
 
     private static void joinEvent() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            if (cooldownItems.get(ic.currentCategory) == null) return;
             for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
                 item.setCooldown(0);
             }

@@ -6,12 +6,13 @@ import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.text.Text;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemCooldown implements ModInitializer {
 
