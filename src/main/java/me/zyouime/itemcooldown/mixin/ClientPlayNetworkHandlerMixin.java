@@ -1,7 +1,5 @@
 package me.zyouime.itemcooldown.mixin;
 
-import me.zyouime.itemcooldown.ItemCooldown;
-import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import me.zyouime.itemcooldown.util.UseItem;
@@ -14,12 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.CooldownUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.List;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin implements Wrapper {

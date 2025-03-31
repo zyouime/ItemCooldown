@@ -28,19 +28,30 @@ public class CooldownManager {
                 if (usedItem.getNbt() != null && cic.nbt != null) {
                     NbtCompound compound = usedItem.copy().getNbt();
                     NbtCompound itemNbt = cic.nbt;
-                    ItemCooldown.removeExtraKeys(compound, itemNbt);
-                    if (itemNbt.equals(compound)) {
-                        if (!cic.isSetWhenNoFightMode()) {
-                            if (isPvP()) {
-                                cic.setCooldown(cic.getMaxCooldown());
+                    NbtManager.prepareKeys(compound, itemNbt);
+                    if (itemNbt.equals(compound) && !cic.isDynamicNbt()) {
+                        setCooldown(cic);
+                        return;
+                    } else if (cic.isDynamicNbt()) {
+                        for (String s : compound.getKeys()) {
+                            if (itemNbt.contains(s) && !compound.getCompound(s).isEmpty()) {
+                                setCooldown(cic);
+                                return;
                             }
-                        } else {
-                            cic.setCooldown(cic.getMaxCooldown());
                         }
-                        break;
                     }
                 }
             }
+        }
+    }
+
+    private static void setCooldown(CustomItemCooldown cic) {
+        if (!cic.isSetWhenNoFightMode()) {
+            if (isPvP()) {
+                cic.setCooldown(cic.getMaxCooldown());
+            }
+        } else {
+            cic.setCooldown(cic.getMaxCooldown());
         }
     }
 }

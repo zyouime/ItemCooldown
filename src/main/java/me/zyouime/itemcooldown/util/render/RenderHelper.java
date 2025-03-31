@@ -41,12 +41,12 @@ public class RenderHelper {
     }
 
     public static void drawCenteredXYText(DrawContext context, float x, float y, float scale, String text, Color color) {
-        drawText(context, x - (textRenderer.getWidth(text) / 2f), y + (textRenderer.fontHeight / 2f), scale, text, color);
+        drawText(context, x - (textRenderer.getWidth(text) / 2f * scale), y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
     }
 
 
     public static void drawCenteredYText(DrawContext context, float x, float y, float scale, String text, Color color) {
-        drawText(context, x, y + (textRenderer.fontHeight / 2f), scale, text, color);
+        drawText(context, x, y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
     }
 
     public static void drawText(DrawContext context, float x, float y, float scale, String text, Color color) {

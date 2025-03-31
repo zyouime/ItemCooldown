@@ -56,7 +56,7 @@ public class AbstractItemCooldown {
         String text = (cooldown / 20) + " сек";
         float textScale = scale / 4.44f;
         float textX = renderX + (20 - RenderHelper.textRenderer.getWidth(text) * textScale) / 2;
-        RenderHelper.drawCenteredYText(context, textX, renderY + 14, textScale, text, Color.YELLOW);
+        RenderHelper.drawCenteredYText(context, textX, renderY + 16, textScale, text, Color.YELLOW);
         matrixStack.pop();
     }
 

@@ -35,10 +35,6 @@ public class ItemCooldown implements ModInitializer {
         EventManager.register();
     }
 
-    public static void removeExtraKeys(NbtCompound removeNbt, NbtCompound cooldownItemNbt) {
-        removeNbt.getKeys().removeIf(s -> !cooldownItemNbt.contains(s));
-    }
-
     public Map<String, List<AbstractItemCooldown>> cooldownItems() {
         return this.cooldownItems;
     }

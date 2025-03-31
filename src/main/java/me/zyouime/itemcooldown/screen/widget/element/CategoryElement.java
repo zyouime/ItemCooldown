@@ -19,7 +19,7 @@ public class CategoryElement implements Element {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float tickDelta) {
-        RenderHelper.drawCenteredXYText(context, x + 43, y + 4, 0.9f, category, color == null ? Color.WHITE : color);
+        RenderHelper.drawCenteredXYText(context, x + 40, y + 4, 0.9f, category, color == null ? Color.WHITE : color);
     }
 
     @Override
