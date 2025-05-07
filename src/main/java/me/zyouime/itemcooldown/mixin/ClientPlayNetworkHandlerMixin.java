@@ -42,7 +42,7 @@ public abstract class ClientPlayNetworkHandlerMixin implements Wrapper {
             if (itemStack != null) {
                 boolean notUsed = packet.getContents().stream().anyMatch(p -> ItemStack.areEqual(p, itemStack));
                 if (!notUsed) {
-                    CooldownManager.setCooldownIfNeeded(ic, itemStack);
+                    CooldownManager.setCooldownIfNeeded(itemStack);
                 }
                 player.clearItem();
             }

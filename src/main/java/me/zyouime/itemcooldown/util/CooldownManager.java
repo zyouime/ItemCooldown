@@ -10,9 +10,9 @@ import net.minecraft.nbt.NbtCompound;
 import static me.zyouime.itemcooldown.event.EventManager.isPvP;
 import static me.zyouime.itemcooldown.util.Wrapper.cooldownItems;
 
-public class CooldownManager {
+public class CooldownManager implements Wrapper {
 
-    public static void setCooldownIfNeeded(ItemCooldown ic, ItemStack usedItem) {
+    public static void setCooldownIfNeeded(ItemStack usedItem) {
         if (cooldownItems.get(ic.currentCategory) == null) return;
         for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
             if (item instanceof VanillaItemCooldown vic) {

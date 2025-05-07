@@ -92,6 +92,12 @@ public abstract class ChatScreenMixin extends Screen {
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         isDragging = false;
+        saveToConfig();
+        draggingItem = null;
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    private void saveToConfig() {
         if (draggingItem != null) {
             ModConfig.loadConfig();
             ConfigData configData = ModConfig.configData;
@@ -107,8 +113,6 @@ public abstract class ChatScreenMixin extends Screen {
             configData.setField("items", savedMap);
             ModConfig.saveConfig();
         }
-        draggingItem = null;
-        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override

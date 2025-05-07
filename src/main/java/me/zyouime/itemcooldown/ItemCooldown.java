@@ -6,11 +6,6 @@ import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.text.Text;
 
 import java.util.*;
 
@@ -32,7 +27,7 @@ public class ItemCooldown implements ModInitializer {
         cooldownItems = (Map<String, List<AbstractItemCooldown>>) configData.getField("items");
         categories = (List<CategoryElement>) configData.getField("categories");
         currentCategory = (String) configData.getField("selectedCategory");
-        EventManager.register();
+        EventManager.registerEvents();
     }
 
     public Map<String, List<AbstractItemCooldown>> cooldownItems() {

@@ -30,8 +30,7 @@ public class ItemCooldownScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
         if (item == null) {
-            float textScale = 1.5f;
-            RenderHelper.drawCenteredXYText(context, centerX, 30, textScale, "Держите в активной руке предмет, который хотите добавить!!!", Color.WHITE);
+            RenderHelper.drawCenteredXYText(context, centerX, 30, 1.5f, "Держите в активной руке предмет, который хотите добавить!!!", Color.WHITE);
         }
         super.render(context, mouseX, mouseY, delta);
     }

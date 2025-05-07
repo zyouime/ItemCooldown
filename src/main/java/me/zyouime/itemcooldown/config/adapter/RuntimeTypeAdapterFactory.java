@@ -91,7 +91,6 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
                                     + typeFieldName);
                 }
                 String label = labelJsonElement.getAsString();
-                @SuppressWarnings("unchecked") // registration requires that subtype extends T
                 TypeAdapter<R> delegate = (TypeAdapter<R>) labelToDelegate.get(label);
                 if (delegate == null) {
                     throw new JsonParseException(
@@ -108,7 +107,6 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
             public void write(JsonWriter out, R value) throws IOException {
                 Class<?> srcType = value.getClass();
                 String label = subtypeToLabel.get(srcType);
-                @SuppressWarnings("unchecked") // registration requires that subtype extends T
                 TypeAdapter<R> delegate = (TypeAdapter<R>) subtypeToDelegate.get(srcType);
                 if (delegate == null) {
                     throw new JsonParseException(

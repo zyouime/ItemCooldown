@@ -1,6 +1,5 @@
 package me.zyouime.itemcooldown.event;
 
-import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import me.zyouime.itemcooldown.util.Wrapper;
@@ -71,7 +70,7 @@ public class EventManager implements Wrapper {
         UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> useItem(player, hand).getResult()));
     }
 
-    public static void register() {
+    public static void registerEvents() {
         hudRenderEvent();
         tickEvent();
         joinEvent();
@@ -86,7 +85,7 @@ public class EventManager implements Wrapper {
     private static TypedActionResult<ItemStack> useItem(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
         if (!itemStack.isFood() && !itemStack.isOf(Items.POTION)) {
-            CooldownManager.setCooldownIfNeeded(ic, itemStack);
+            CooldownManager.setCooldownIfNeeded(itemStack);
         }
         return TypedActionResult.pass(itemStack);
     }
