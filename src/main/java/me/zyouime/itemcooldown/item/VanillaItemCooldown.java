@@ -3,6 +3,8 @@ package me.zyouime.itemcooldown.item;
 import com.google.gson.annotations.Expose;
 import net.minecraft.item.ItemStack;
 
+import static me.zyouime.itemcooldown.event.EventManager.isPvP;
+
 public class VanillaItemCooldown extends AbstractItemCooldown {
 
     @Expose
@@ -23,6 +25,15 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
 
     public VanillaItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean canUseWhenNoFightMode) {
         this(item, maxCooldown, x, y, true, false, false, canUseWhenNoFightMode);
+    }
+
+    @Override
+    public void shouldSetCooldown(ItemStack usedItem) {
+        if (this.getItem().getItem().equals(usedItem.getItem())) {
+            if (this.isHasCustomCooldown() && !this.isSetWhenNoFightMode() && isPvP()) {
+                this.setCooldown(this.getMaxCooldown());
+            }
+        }
     }
 
     public boolean isHasCustomCooldown() {

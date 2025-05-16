@@ -107,6 +107,9 @@ public class AbstractItemCooldown {
         this.y = y;
     }
 
+    public void shouldSetCooldown(ItemStack usedItem) {
+    }
+
     public int getCooldown() {
         return cooldown;
     }
