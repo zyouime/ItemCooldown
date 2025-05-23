@@ -69,9 +69,8 @@ public class AbstractItemCooldown {
         return this.item;
     }
 
-    public ItemStack setCount(int count) {
+    public void setCount(int count) {
         this.item.setCount(count);
-        return this.item;
     }
 
     public int getMaxCooldown() {
@@ -107,7 +106,8 @@ public class AbstractItemCooldown {
         this.y = y;
     }
 
-    public void shouldSetCooldown(ItemStack usedItem) {
+    public boolean shouldSetCooldown(ItemStack usedItem) {
+        return false;
     }
 
     public int getCooldown() {

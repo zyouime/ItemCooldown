@@ -15,7 +15,7 @@ public class CooldownManager implements Wrapper {
     public static void setCooldownIfNeeded(ItemStack usedItem) {
         if (cooldownItems.get(ic.currentCategory) == null) return;
         for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
-            item.shouldSetCooldown(usedItem);
+            if (item.shouldSetCooldown(usedItem)) return;
         }
     }
 }

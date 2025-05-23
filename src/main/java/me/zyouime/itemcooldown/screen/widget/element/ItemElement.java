@@ -34,7 +34,7 @@ public class ItemElement implements Element {
     }
 
     public void init() {
-        MinecraftClient client = mainScreen.getClient();
+        MinecraftClient client = MinecraftClient.getInstance();
         settingButton = ButtonWidget.builder(Text.literal("⚙"), press -> client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ic.currentCategory))).dimensions(0, 0, 20, 20).build();
         mainScreen.addSelectableChild(settingButton);
     }

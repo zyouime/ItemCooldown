@@ -68,8 +68,4 @@ public class MainScreen extends Screen implements Wrapper {
     public void clearAndInit() {
         super.clearAndInit();
     }
-
-    public MinecraftClient getClient() {
-        return this.client;
-    }
 }

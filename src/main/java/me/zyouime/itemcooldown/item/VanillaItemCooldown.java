@@ -1,6 +1,7 @@
 package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import static me.zyouime.itemcooldown.event.EventManager.isPvP;
@@ -10,33 +11,81 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
     @Expose
     private boolean hasCustomCooldown;
 
-    public VanillaItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean hasCustomCooldown, boolean resetWhenNoFightMode, boolean setWhenNoFightMode, boolean canUseWhenNoFightMode) {
-        super(item, maxCooldown, x, y, resetWhenNoFightMode, setWhenNoFightMode, canUseWhenNoFightMode);
-        this.hasCustomCooldown = hasCustomCooldown;
-    }
-
-    public VanillaItemCooldown(ItemStack item, float x, float y, boolean canUseWhenNoFightMode) {
-        this(item, 0, x, y, false, false, true, canUseWhenNoFightMode);
-    }
-
-    public VanillaItemCooldown(ItemStack item, int maxCooldown, float x, float y) {
-        this(item, maxCooldown, x, y, true, false, false, true);
-    }
-
-    public VanillaItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean canUseWhenNoFightMode) {
-        this(item, maxCooldown, x, y, true, false, false, canUseWhenNoFightMode);
+    private VanillaItemCooldown(Builder builder) {
+        super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode);
+        this.hasCustomCooldown = builder.hasCustomCooldown;
     }
 
     @Override
-    public void shouldSetCooldown(ItemStack usedItem) {
+    public boolean shouldSetCooldown(ItemStack usedItem) {
         if (this.getItem().getItem().equals(usedItem.getItem())) {
             if (this.isHasCustomCooldown() && !this.isSetWhenNoFightMode() && isPvP()) {
                 this.setCooldown(this.getMaxCooldown());
+                return true;
             }
         }
+        return false;
     }
 
     public boolean isHasCustomCooldown() {
         return hasCustomCooldown;
+    }
+
+    public static Builder builder(Item item) {
+        return new Builder(new ItemStack(item));
+    }
+
+    public static class Builder {
+        private final ItemStack item;
+        private int maxCooldown;
+        private float x;
+        private float y;
+        private boolean hasCustomCooldown;
+        private boolean resetWhenNoFightMode;
+        private boolean setWhenNoFightMode = true;
+        private boolean canUseWhenNoFightMode;
+
+        public Builder(ItemStack item) {
+            this.item = item;
+        }
+
+        public Builder setMaxCooldown(int maxCooldown) {
+            this.maxCooldown = maxCooldown;
+            return this;
+        }
+
+        public Builder setX(float x) {
+            this.x = x;
+            return this;
+        }
+
+        public Builder setY(float y) {
+            this.y = y;
+            return this;
+        }
+
+        public Builder hasCustomCooldown(boolean hasCustomCooldown) {
+            this.hasCustomCooldown = hasCustomCooldown;
+            return this;
+        }
+
+        public Builder resetWhenNoFightMode(boolean resetWhenNoFightMode) {
+            this.resetWhenNoFightMode = resetWhenNoFightMode;
+            return this;
+        }
+
+        public Builder setWhenNoFightMode(boolean setWhenNoFightMode) {
+            this.setWhenNoFightMode = setWhenNoFightMode;
+            return this;
+        }
+
+        public Builder canUseWhenNoFightMode(boolean canUseWhenNoFightMode) {
+            this.canUseWhenNoFightMode = canUseWhenNoFightMode;
+            return this;
+        }
+
+        public VanillaItemCooldown build() {
+            return new VanillaItemCooldown(this);
+        }
     }
 }
