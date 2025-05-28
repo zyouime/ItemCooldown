@@ -37,6 +37,7 @@ public abstract class LivingEntityMixin implements UseItem {
         }
     }
 
+    @Unique
     private boolean isClientPlayer() {
         return livingEntity instanceof ClientPlayerEntity;
     }

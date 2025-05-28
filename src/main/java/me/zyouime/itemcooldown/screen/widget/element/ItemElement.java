@@ -18,8 +18,6 @@ public class ItemElement implements Element {
     private float x, y;
     private final MainScreen mainScreen;
     private ButtonWidget settingButton;
-    private final ItemCooldown ic = ItemCooldown.getInstance();
-
 
     public ItemElement(AbstractItemCooldown item, MainScreen mainScreen) {
         this.item = item;
@@ -35,7 +33,7 @@ public class ItemElement implements Element {
 
     public void init() {
         MinecraftClient client = MinecraftClient.getInstance();
-        settingButton = ButtonWidget.builder(Text.literal("⚙"), press -> client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ic.currentCategory))).dimensions(0, 0, 20, 20).build();
+        settingButton = ButtonWidget.builder(Text.literal("⚙"), press -> client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ItemCooldown.getInstance().settings.selectedCategory.getValue()))).dimensions(0, 0, 20, 20).build();
         mainScreen.addSelectableChild(settingButton);
     }
 

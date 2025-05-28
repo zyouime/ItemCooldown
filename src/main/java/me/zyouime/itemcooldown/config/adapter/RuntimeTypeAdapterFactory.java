@@ -14,9 +14,10 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-//Взял с инета
-
 public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
+
+    //ВЗЯЛ С ИНЕТА
+
     private final Class<?> baseType;
     private final String typeFieldName;
     private final Map<String, Class<?>> labelToSubtype = new LinkedHashMap<>();

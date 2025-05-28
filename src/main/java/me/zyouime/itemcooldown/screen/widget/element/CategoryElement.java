@@ -1,6 +1,6 @@
 package me.zyouime.itemcooldown.screen.widget.element;
 
-import com.google.gson.annotations.Expose;
+import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
 import net.minecraft.client.gui.DrawContext;
 
@@ -8,18 +8,17 @@ import java.awt.*;
 
 public class CategoryElement implements Element {
 
-    @Expose
-    private String category;
+    private ConfigData.Category category;
     private float x, y;
     private Color color;
 
-    public CategoryElement(String category) {
+    public CategoryElement(ConfigData.Category category) {
         this.category = category;
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float tickDelta) {
-        RenderHelper.drawCenteredXYText(context, x + 40, y + 4, 0.9f, category, color == null ? Color.WHITE : color);
+        RenderHelper.drawCenteredXYText(context, x + 40, y + 4, 0.9f, category.name, color == null ? Color.WHITE : color);
     }
 
     @Override
@@ -32,11 +31,11 @@ public class CategoryElement implements Element {
         this.color = color;
     }
 
-    public String getCategory() {
+    public ConfigData.Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ConfigData.Category category) {
         this.category = category;
     }
 }

@@ -1,5 +1,6 @@
 package me.zyouime.itemcooldown.screen;
 
+import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
 import net.minecraft.client.gui.DrawContext;
@@ -14,7 +15,7 @@ public class ItemCooldownScreen extends Screen {
     private final AbstractItemCooldown item;
     private float centerX, centerY;
 
-    public ItemCooldownScreen(Screen parent, AbstractItemCooldown item, String category) {
+    public ItemCooldownScreen(Screen parent, AbstractItemCooldown item, ConfigData.Category category) {
         super(Text.empty());
         this.parent = parent;
         this.item = item;

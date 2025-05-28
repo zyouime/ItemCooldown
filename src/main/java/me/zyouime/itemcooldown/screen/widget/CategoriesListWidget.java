@@ -1,26 +1,27 @@
 package me.zyouime.itemcooldown.screen.widget;
 
 import me.zyouime.itemcooldown.ItemCooldown;
+import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
-import me.zyouime.itemcooldown.util.Wrapper;
+import me.zyouime.itemcooldown.setting.CategorySetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
-import net.minecraft.data.Main;
 
 import java.awt.*;
 
-public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.Elements> implements Wrapper {
+public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.Elements> {
 
     private boolean open;
     private final MainScreen screen;
+    private final ItemCooldown itemCooldown = ItemCooldown.getInstance();
+    private final CategorySetting categorySetting = itemCooldown.settings.selectedCategory;
 
     public CategoriesListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight, MainScreen screen) {
         super(client, width, height, top, bottom, itemHeight);
-        this.addEntry(new Elements(new CategoryElement(ic.currentCategory)));
+        this.addEntry(new Elements(new CategoryElement(categorySetting.getValue())));
         this.screen = screen;
     }
 
@@ -37,8 +38,8 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
             if (elements.mouseClicked(mouseX, mouseY, button)) {
                 open = !open;
                 if (!open) {
-                    ic.currentCategory = elements.category.getCategory();
-                    this.children().get(0).category.setCategory(ic.currentCategory);
+                    categorySetting.setValue(elements.category.getCategory());
+                    this.children().get(0).category.setCategory(categorySetting.getValue());
                     this.setScrollAmount(0);
                     this.screen.clearAndInit();
                 }

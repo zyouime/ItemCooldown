@@ -1,8 +1,9 @@
 package me.zyouime.itemcooldown.event;
 
+import me.zyouime.itemcooldown.ItemCooldown;
+import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
-import me.zyouime.itemcooldown.util.Wrapper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -11,28 +12,29 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.collection.DefaultedList;
 
-public class EventManager implements Wrapper {
+import java.util.List;
+import java.util.Map;
+
+public class EventManager {
 
     private static long fightTimer;
     private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final ItemCooldown itemCooldown = ItemCooldown.getInstance();
+    private static final Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemCooldown.settings.items.getValue();
+    private static final ConfigData.Category selectedCategory = itemCooldown.settings.selectedCategory.getValue();
 
     private static void hudRenderEvent() {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
             if (client.currentScreen instanceof ChatScreen) return;
-            if (cooldownItems.get(ic.currentCategory) == null) return;
-            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
+            if (items.get(selectedCategory) == null) return;
+            for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
                     item.render(drawContext);
                 }
@@ -42,8 +44,8 @@ public class EventManager implements Wrapper {
 
     private static void tickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (cooldownItems.get(ic.currentCategory) == null) return;
-            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
+            if (items.get(selectedCategory) == null) return;
+            for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
                 if (item.isResetWhenNoFightMode() && !isPvP()) {
                     item.setCooldown(0);
@@ -63,8 +65,8 @@ public class EventManager implements Wrapper {
 
     private static void joinEvent() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if (cooldownItems.get(ic.currentCategory) == null) return;
-            for (AbstractItemCooldown item : cooldownItems.get(ic.currentCategory)) {
+            if (items.get(selectedCategory) == null) return;
+            for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 item.setCooldown(0);
             }
         });

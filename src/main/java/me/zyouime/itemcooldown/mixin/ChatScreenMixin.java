@@ -23,8 +23,7 @@ import java.util.Map;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen {
-    @Unique
-    private final ItemCooldown ic = ItemCooldown.getInstance();
+
     @Unique
     private float scale, scaledCenterX, scaledCenterY, scaledWidth, scaledHeight, x, y, offsetX, offsetY;
     @Unique
@@ -33,6 +32,10 @@ public abstract class ChatScreenMixin extends Screen {
     private Window window;
     @Unique
     private AbstractItemCooldown draggingItem;
+    @Unique
+    private Map<ConfigData.Category, List<AbstractItemCooldown>> items;
+    @Unique
+    private ConfigData.Category category;
 
     protected ChatScreenMixin(Text title) {
         super(title);
@@ -40,7 +43,10 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void init(CallbackInfo ci) {
-        scale = (float) ModConfig.configData.getField("scale");
+        ItemCooldown itemCooldown = ItemCooldown.getInstance();
+        items = itemCooldown.settings.items.getValue();
+        scale = itemCooldown.settings.scale.getValue();
+        category = itemCooldown.settings.selectedCategory.getValue();
         window = this.client.getWindow();
         scaledWidth = window.getScaledWidth();
         scaledHeight = window.getScaledHeight();
@@ -50,12 +56,12 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        ic.cooldownItems().get(ic.currentCategory).forEach(aic -> aic.render(context));
+        items.get(category).forEach(aic -> aic.render(context));
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (AbstractItemCooldown item : ic.cooldownItems().get(ic.currentCategory)) {
+        for (AbstractItemCooldown item : items.get(category)) {
             float itemX = Math.max(0, Math.min(scaledCenterX / scale + item.getX(), (scaledWidth / scale) - 20));
             float itemY = Math.max(0, Math.min(scaledCenterY / scale + item.getY(), (scaledHeight / scale) - 24));
             if (mouseX >= itemX * scale && mouseX <= (itemX + 20) * scale && mouseY >= itemY * scale && mouseY <= (itemY + 24) * scale) {
@@ -97,21 +103,10 @@ public abstract class ChatScreenMixin extends Screen {
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
+    @Unique
     private void saveToConfig() {
         if (draggingItem != null) {
-            ModConfig.loadConfig();
-            ConfigData configData = ModConfig.configData;
-            Map<String, List<AbstractItemCooldown>> savedMap = (Map<String, List<AbstractItemCooldown>>) configData.getField("items");
-            List<AbstractItemCooldown> configItems = savedMap.get(ic.currentCategory);
-            for (AbstractItemCooldown item : configItems) {
-                if (ItemStack.areItemsEqual(item.getItem(), draggingItem.getItem())) {
-                    item.updatePos(this.x, this.y);
-                    break;
-                }
-            }
-            savedMap.put(ic.currentCategory, configItems);
-            configData.setField("items", savedMap);
-            ModConfig.saveConfig();
+            ItemCooldown.getInstance().settings.items.updatePos(category, draggingItem, x, y);
         }
     }
 

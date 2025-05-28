@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class ModConfig {
     private static final File FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "itemcooldown.json");
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(NbtCompound.class, new NbtCompoundTypeAdapter())
             .registerTypeAdapter(ItemStack.class, new ItemStackTypeAdapter())
@@ -29,7 +29,7 @@ public class ModConfig {
                     .registerSubtype(CustomItemCooldown.class))
             .excludeFieldsWithoutExposeAnnotation()
             .create();
-
+    
     public static ConfigData configData;
 
     public static void loadConfig() {
@@ -55,10 +55,8 @@ public class ModConfig {
         try {
             if (!FILE.exists()) {
                 FILE.createNewFile();
-                try (FileWriter fileWriter = new FileWriter(FILE)) {
-                    configData = new ConfigData();
-                    GSON.toJson(configData, fileWriter);
-                }
+                configData = new ConfigData();
+                saveConfig();
             } else loadConfig();
         } catch (IOException e) {
             throw new RuntimeException("Не удалось загрузить конфиг, ошибка: " + e);

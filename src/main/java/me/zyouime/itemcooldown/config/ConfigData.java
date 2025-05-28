@@ -6,7 +6,6 @@ import me.zyouime.itemcooldown.item.CustomItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.util.HolyWorldItems;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 import java.lang.reflect.Field;
@@ -20,17 +19,12 @@ public class ConfigData {
     @Expose
     float scale = 2f;
     @Expose
-    Map<String, List<AbstractItemCooldown>> items = new HashMap<>();
+    Map<Category, List<AbstractItemCooldown>> items = new HashMap<>();
     @Expose
-    List<CategoryElement> categories = new ArrayList<>();
-    @Expose
-    String selectedCategory = "HolyWorld";
+    Category selectedCategory = Category.HOLYWORLD;
 
     public ConfigData() {
-        categories.add(new CategoryElement("HolyWorld"));
-        categories.add(new CategoryElement("FunTime"));
-        categories.add(new CategoryElement("Custom"));
-        items.put("HolyWorld", fillList());
+        items.put(Category.HOLYWORLD, fillList());
     }
 
     public void setField(String fieldName, Object value) {
@@ -72,5 +66,15 @@ public class ConfigData {
         holyWorldItems.add(CustomItemCooldown.builder(Items.FIREWORK_STAR).setMaxCooldown(30).setX(0).setY(-40).setNbt(HolyWorldItems.FAREWELL_HUM).setSetWhenNoFightMode(true).build());
         holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(10).setX(25).setY(-40).setNbt(HolyWorldItems.STRONG_HEALING_POTION).setSetWhenNoFightMode(true).build());
         return holyWorldItems;
+    }
+
+    public enum Category {
+        HOLYWORLD("HolyWorld"),
+        FUNTIME("FunTime"),
+        CUSTOM("Custom");
+        public final String name;
+        Category(String name) {
+            this.name = name;
+        }
     }
 }

@@ -5,6 +5,10 @@ import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
+import me.zyouime.itemcooldown.setting.CategorySetting;
+import me.zyouime.itemcooldown.setting.ItemsSetting;
+import me.zyouime.itemcooldown.setting.NumberSetting;
+import me.zyouime.itemcooldown.setting.Setting;
 import net.fabricmc.api.ModInitializer;
 
 import java.util.*;
@@ -12,9 +16,12 @@ import java.util.*;
 public class ItemCooldown implements ModInitializer {
 
     private static ItemCooldown instance;
-    private Map<String, List<AbstractItemCooldown>> cooldownItems = new HashMap<>();
-    private List<CategoryElement> categories = new ArrayList<>();
-    public String currentCategory;
+    private final List<CategoryElement> categories = List.of(
+            new CategoryElement(ConfigData.Category.HOLYWORLD),
+            new CategoryElement(ConfigData.Category.FUNTIME),
+            new CategoryElement(ConfigData.Category.CUSTOM)
+    );
+    public Settings settings;
 
     public ItemCooldown() {
         instance = this;
@@ -23,22 +30,28 @@ public class ItemCooldown implements ModInitializer {
     @Override
     public void onInitialize() {
         ModConfig.register();
-        ConfigData configData = ModConfig.configData;
-        cooldownItems = (Map<String, List<AbstractItemCooldown>>) configData.getField("items");
-        categories = (List<CategoryElement>) configData.getField("categories");
-        currentCategory = (String) configData.getField("selectedCategory");
+        settings = new Settings();
         EventManager.registerEvents();
     }
 
-    public Map<String, List<AbstractItemCooldown>> cooldownItems() {
-        return this.cooldownItems;
-    }
-
     public List<CategoryElement> getCategories() {
-        return categories;
+        return new ArrayList<>(categories);
     }
 
     public static ItemCooldown getInstance() {
         return instance;
+    }
+
+    public static class Settings {
+
+        public List<Setting<?>> settingsList = new ArrayList<>();
+        public ItemsSetting items = register(new ItemsSetting("items"));
+        public NumberSetting scale = register(new NumberSetting("scale"));
+        public CategorySetting selectedCategory = register(new CategorySetting("selectedCategory"));
+
+        private <T extends Setting<?>> T register(T t) {
+            this.settingsList.add(t);
+            return t;
+        }
     }
 }
