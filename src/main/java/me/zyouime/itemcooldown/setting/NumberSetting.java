@@ -11,5 +11,4 @@ public class NumberSetting extends Setting<Float> {
     public String toString() {
         return Float.toString(this.getValue());
     }
-
 }

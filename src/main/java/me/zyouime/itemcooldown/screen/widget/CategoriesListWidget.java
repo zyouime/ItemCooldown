@@ -1,7 +1,6 @@
 package me.zyouime.itemcooldown.screen.widget;
 
 import me.zyouime.itemcooldown.ItemCooldown;
-import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.setting.CategorySetting;

@@ -5,7 +5,6 @@ import me.zyouime.itemcooldown.util.HolyWorldItems;
 import me.zyouime.itemcooldown.util.NbtManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
 
@@ -113,12 +112,12 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             return this;
         }
 
-        public Builder setSetWhenNoFightMode(boolean setWhenNoFightMode) {
+        public Builder setWhenNoFightMode(boolean setWhenNoFightMode) {
             this.setWhenNoFightMode = setWhenNoFightMode;
             return this;
         }
 
-        public Builder setCanUseWhenNoFightMode(boolean canUseWhenNoFightMode) {
+        public Builder canUseWhenNoFightMode(boolean canUseWhenNoFightMode) {
             this.canUseWhenNoFightMode = canUseWhenNoFightMode;
             return this;
         }

@@ -8,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-import static me.zyouime.itemcooldown.event.EventManager.isPvP;
-
 public class CooldownManager {
 
     private static final Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();

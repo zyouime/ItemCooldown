@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.CustomItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
-import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.util.HolyWorldItems;
 import net.minecraft.item.Items;
 
@@ -59,12 +58,12 @@ public class ConfigData {
         holyWorldItems.add(VanillaItemCooldown.builder(Items.JACK_O_LANTERN).setX(75).setY(-100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.SNOWBALL).setX(50).setY(-100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.ENDER_PEARL).setX(0).setY(-70).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.FIRE_CHARGE).setMaxCooldown(60).setX(25).setY(-70).setNbt(HolyWorldItems.FIRE_CHARGE).setSetWhenNoFightMode(true).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(300).setX(-25).setY(-45).setNbt(HolyWorldItems.WIN_POTION).setSetWhenNoFightMode(false).setCanUseWhenNoFightMode(true).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(150).setX(50).setY(-70).setNbt(HolyWorldItems.LONG_TURTLE_MASTER).setSetWhenNoFightMode(true).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.EXPERIENCE_BOTTLE).setMaxCooldown(600).setX(-50).setY(-40).setNbt(HolyWorldItems.EXP_BOTTLE).setSetWhenNoFightMode(true).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.FIREWORK_STAR).setMaxCooldown(30).setX(0).setY(-40).setNbt(HolyWorldItems.FAREWELL_HUM).setSetWhenNoFightMode(true).build());
-        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(10).setX(25).setY(-40).setNbt(HolyWorldItems.STRONG_HEALING_POTION).setSetWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.FIRE_CHARGE).setMaxCooldown(60).setX(25).setY(-70).setNbt(HolyWorldItems.FIRE_CHARGE).setWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(300).setX(-25).setY(-45).setNbt(HolyWorldItems.WIN_POTION).setWhenNoFightMode(false).canUseWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(150).setX(50).setY(-70).setNbt(HolyWorldItems.LONG_TURTLE_MASTER).setWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.EXPERIENCE_BOTTLE).setMaxCooldown(600).setX(-50).setY(-40).setNbt(HolyWorldItems.EXP_BOTTLE).setWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.FIREWORK_STAR).setMaxCooldown(30).setX(0).setY(-40).setNbt(HolyWorldItems.FAREWELL_HUM).setWhenNoFightMode(true).build());
+        holyWorldItems.add(CustomItemCooldown.builder(Items.POTION).setMaxCooldown(10).setX(25).setY(-40).setNbt(HolyWorldItems.STRONG_HEALING_POTION).setWhenNoFightMode(true).build());
         return holyWorldItems;
     }
 

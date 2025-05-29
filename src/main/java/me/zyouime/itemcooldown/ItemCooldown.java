@@ -3,7 +3,6 @@ package me.zyouime.itemcooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
-import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.setting.CategorySetting;
 import me.zyouime.itemcooldown.setting.ItemsSetting;
@@ -29,7 +28,7 @@ public class ItemCooldown implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModConfig.register();
+        ModConfig.initialize();
         settings = new Settings();
         EventManager.registerEvents();
     }

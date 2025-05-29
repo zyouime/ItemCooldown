@@ -51,7 +51,7 @@ public class ModConfig {
         }
     }
 
-    public static void register() {
+    public static void initialize() {
         try {
             if (!FILE.exists()) {
                 FILE.createNewFile();

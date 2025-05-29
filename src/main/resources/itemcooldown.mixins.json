@@ -7,6 +7,7 @@
     "LivingEntityMixin"
   ],
   "client": [
+    "BossBarHudAccessor",
     "ChatScreenMixin",
     "ClientPlayNetworkHandlerMixin",
     "KeyboardMixin"
