@@ -11,7 +11,6 @@ import java.awt.*;
 
 public class ItemsListWidget extends EntryListWidget<ItemsListWidget.Elements> {
 
-
     public ItemsListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight) {
         super(client, width, height, top, bottom, itemHeight);
     }

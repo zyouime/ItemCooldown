@@ -8,7 +8,6 @@ import me.zyouime.itemcooldown.util.CooldownManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +16,6 @@ import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
@@ -27,8 +25,6 @@ import java.util.UUID;
 
 public class EventManager {
 
-    private static long fightTimer;
-    private static final MinecraftClient client = MinecraftClient.getInstance();
     private static final ItemCooldown itemCooldown = ItemCooldown.getInstance();
     private static final String[] PVP_TYPES = new String[]{"режим боя", "пвп", "pvp"};
     private static final Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemCooldown.settings.items.getValue();
@@ -36,7 +32,7 @@ public class EventManager {
 
     private static void hudRenderEvent() {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
-            if (client.currentScreen instanceof ChatScreen) return;
+            if (MinecraftClient.getInstance().currentScreen instanceof ChatScreen) return;
             if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
@@ -83,9 +79,7 @@ public class EventManager {
         BossBarHudAccessor bossBar = (BossBarHudAccessor) MinecraftClient.getInstance().inGameHud.getBossBarHud();
         for (Map.Entry<UUID, BossBar> entry : bossBar.getBossBars().entrySet()) {
             for (String pvpType : PVP_TYPES) {
-                if (entry.getValue().getName().getString().toLowerCase().contains(pvpType)) {
-                    return true;
-                }
+                if (entry.getValue().getName().getString().toLowerCase().contains(pvpType)) return true;
             }
         }
         return false;

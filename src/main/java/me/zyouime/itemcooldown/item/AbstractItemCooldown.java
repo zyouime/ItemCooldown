@@ -1,6 +1,7 @@
 package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
+import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
@@ -39,8 +40,7 @@ public class AbstractItemCooldown {
 
     public void render(DrawContext context) {
         MatrixStack matrixStack = context.getMatrices();
-        ConfigData configData = ModConfig.configData;
-        float scale = (float) configData.getField("scale");
+        float scale = ItemCooldown.getInstance().settings.scale.getValue();
         float sWidth = context.getScaledWindowWidth();
         float sHeight = context.getScaledWindowHeight();
         float centerX = sWidth / 2f;
@@ -53,11 +53,10 @@ public class AbstractItemCooldown {
         matrixStack.scale(scale, scale, 1.0f);
         RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
         RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
-        String text = (cooldown / 20) + " сек";
-        float textScale = scale / 4.44f;
-        float textX = renderX + (20 - RenderHelper.textRenderer.getWidth(text) * textScale) / 2;
-        RenderHelper.drawCenteredYText(context, textX, renderY + 16, textScale, text, Color.YELLOW);
         matrixStack.pop();
+        String text = (cooldown / 20) + " сек";
+        float textX = renderX * scale + (20 * scale - RenderHelper.textRenderer.getWidth(text) * (scale / 2f)) / 2f;
+        RenderHelper.drawCenteredYText(context, textX, (renderY + 16) * scale, scale / 2f, text, Color.YELLOW);
     }
 
 

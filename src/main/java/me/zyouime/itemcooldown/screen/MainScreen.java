@@ -4,9 +4,11 @@ import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.CategoriesListWidget;
+import me.zyouime.itemcooldown.screen.widget.CustomSliderWidget;
 import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
 import me.zyouime.itemcooldown.screen.widget.element.ItemElement;
 import me.zyouime.itemcooldown.screen.widget.ItemsListWidget;
+import me.zyouime.itemcooldown.setting.Setting;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
@@ -30,7 +32,7 @@ public class MainScreen extends Screen {
     protected void init() {
         Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
         ConfigData.Category category = ItemCooldown.getInstance().settings.selectedCategory.getValue();
-        ItemsListWidget itemsList = new ItemsListWidget(client, this.width, this.height, 96, this.height - 64, 30);
+        ItemsListWidget itemsList = new ItemsListWidget(client, this.width, this.height, 96, this.height - 80, 30);
         if (items.get(category) != null) {
             for (AbstractItemCooldown item : items.get(category)) {
                 ItemElement element = new ItemElement(item, this);
@@ -38,6 +40,7 @@ public class MainScreen extends Screen {
                 itemsList.addEntry(new ItemsListWidget.Elements(element));
             }
         }
+        CustomSliderWidget sliderWidget = new CustomSliderWidget(20, this.height - 20, 80, 20, Text.of("ZAlupa: "), 0, 3, ItemCooldown.getInstance().settings.scale);
         CategoriesListWidget categoriesList = new CategoriesListWidget(client, 80, this.height, 12, 96, 30, this);
         categoriesList.setLeftPos(width / 2 - 40);
         for (CategoryElement element : ItemCooldown.getInstance().getCategories()) {
@@ -50,6 +53,7 @@ public class MainScreen extends Screen {
         this.addDrawableChild(itemsList);
         this.addDrawableChild(addItem);
         this.addDrawableChild(categoriesList);
+        this.addDrawableChild(sliderWidget);
         super.init();
     }
 
@@ -66,6 +70,7 @@ public class MainScreen extends Screen {
 
     @Override
     public void close() {
+        ItemCooldown.getInstance().settings.settingsList.forEach(Setting::save);
         client.setScreen(parent);
     }
 

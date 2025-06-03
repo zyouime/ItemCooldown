@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class ModConfig {
+
     private static final File FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "itemcooldown.json");
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
@@ -29,7 +30,6 @@ public class ModConfig {
                     .registerSubtype(CustomItemCooldown.class))
             .excludeFieldsWithoutExposeAnnotation()
             .create();
-    
     public static ConfigData configData;
 
     public static void loadConfig() {

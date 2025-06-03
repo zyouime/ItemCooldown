@@ -1,4 +1,4 @@
-package me.zyouime.itemcooldown.util;
+package me.zyouime.itemcooldown.util.items;
 
 public enum HolyWorldItems {
 

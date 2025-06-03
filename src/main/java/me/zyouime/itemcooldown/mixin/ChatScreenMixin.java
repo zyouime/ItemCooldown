@@ -56,6 +56,7 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        if (items.get(category) == null) return;
         items.get(category).forEach(aic -> aic.render(context));
     }
 

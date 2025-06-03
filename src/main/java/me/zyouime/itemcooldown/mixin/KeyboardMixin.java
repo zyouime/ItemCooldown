@@ -20,7 +20,7 @@ public class KeyboardMixin {
     @Inject(method = "onKey", at = @At("RETURN"))
     private void onKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (action == GLFW.GLFW_PRESS && key == GLFW.GLFW_KEY_H && client.currentScreen == null) {
-            this.client.setScreen(new MainScreen(null));
+            //this.client.setScreen(new MainScreen(null));
         }
     }
 }

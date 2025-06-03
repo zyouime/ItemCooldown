@@ -1,7 +1,7 @@
 package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
-import me.zyouime.itemcooldown.util.HolyWorldItems;
+import me.zyouime.itemcooldown.util.items.HolyWorldItems;
 import me.zyouime.itemcooldown.util.NbtManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
