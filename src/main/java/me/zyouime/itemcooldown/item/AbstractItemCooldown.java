@@ -54,7 +54,8 @@ public class AbstractItemCooldown {
         RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
         RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
         matrixStack.pop();
-        String text = (cooldown / 20) + " сек";
+        int seconds = cooldown / 20;
+        String text = String.valueOf(seconds);
         float textX = renderX * scale + (20 * scale - RenderHelper.textRenderer.getWidth(text) * (scale / 2f)) / 2f;
         RenderHelper.drawCenteredYText(context, textX, (renderY + 16) * scale, scale / 2f, text, Color.YELLOW);
     }

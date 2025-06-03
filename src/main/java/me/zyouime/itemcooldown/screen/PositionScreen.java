@@ -1,61 +1,53 @@
-package me.zyouime.itemcooldown.mixin;
+package me.zyouime.itemcooldown.screen;
 
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
-import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
+import me.zyouime.itemcooldown.setting.Setting;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
-import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Mixin(ChatScreen.class)
-public abstract class ChatScreenMixin extends Screen {
+public class PositionScreen extends Screen {
 
-    @Unique
-    private float scale, scaledCenterX, scaledCenterY, scaledWidth, scaledHeight, x, y, offsetX, offsetY;
-    @Unique
+    private final Screen parent;
+    private float scale;
+    private float scaledCenterX;
+    private float scaledCenterY;
+    private float scaledWidth;
+    private float scaledHeight;
+    private float offsetX;
+    private float offsetY;
     private boolean isDragging;
-    @Unique
-    private Window window;
-    @Unique
     private AbstractItemCooldown draggingItem;
-    @Unique
     private Map<ConfigData.Category, List<AbstractItemCooldown>> items;
-    @Unique
     private ConfigData.Category category;
 
-    protected ChatScreenMixin(Text title) {
-        super(title);
+    public PositionScreen(Screen parent) {
+        super(Text.empty());
+        this.parent = parent;
     }
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void init(CallbackInfo ci) {
+    @Override
+    public void init() {
         ItemCooldown itemCooldown = ItemCooldown.getInstance();
         items = itemCooldown.settings.items.getValue();
         scale = itemCooldown.settings.scale.getValue();
         category = itemCooldown.settings.selectedCategory.getValue();
-        window = this.client.getWindow();
+        Window window = this.client.getWindow();
         scaledWidth = window.getScaledWidth();
         scaledHeight = window.getScaledHeight();
         scaledCenterX = scaledWidth / 2f;
         scaledCenterY = scaledHeight / 2f;
     }
 
-    @Inject(method = "render", at = @At("RETURN"))
-    private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Override
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.renderBackground(context);
         if (items.get(category) == null) return;
         items.get(category).forEach(aic -> aic.render(context));
     }
@@ -80,8 +72,8 @@ public abstract class ChatScreenMixin extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (isDragging && draggingItem != null) {
-            x = ((float) mouseX - scaledCenterX - offsetX) / scale;
-            y = ((float) mouseY - scaledCenterY - offsetY) / scale;
+            float x = ((float) mouseX - scaledCenterX - offsetX) / scale;
+            float y = ((float) mouseY - scaledCenterY - offsetY) / scale;
             float minX = -scaledCenterX / scale;
             float minY = -scaledCenterY / scale;
             float maxX = (scaledCenterX / scale) - 20;
@@ -98,21 +90,16 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        isDragging = false;
-        saveToConfig();
-        draggingItem = null;
-        return super.mouseReleased(mouseX, mouseY, button);
-    }
-
-    @Unique
-    private void saveToConfig() {
-        if (draggingItem != null) {
-            ItemCooldown.getInstance().settings.items.updatePos(category, draggingItem, x, y);
+        if (isDragging && draggingItem != null) {
+            isDragging = false;
+            draggingItem = null;
         }
+        return super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override
     public void close() {
-        super.close();
+        ItemCooldown.getInstance().settings.settingsList.forEach(Setting::save);
+        this.client.setScreen(parent);
     }
 }

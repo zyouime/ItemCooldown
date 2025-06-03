@@ -9,18 +9,17 @@ import me.zyouime.itemcooldown.setting.ItemsSetting;
 import me.zyouime.itemcooldown.setting.NumberSetting;
 import me.zyouime.itemcooldown.setting.Setting;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 
 import java.util.*;
 
 public class ItemCooldown implements ModInitializer {
 
     private static ItemCooldown instance;
-    private final List<CategoryElement> categories = List.of(
-            new CategoryElement(ConfigData.Category.HOLYWORLD),
-            new CategoryElement(ConfigData.Category.FUNTIME),
-            new CategoryElement(ConfigData.Category.CUSTOM)
-    );
     public Settings settings;
+    public final KeyBinding OPEN_SETTINGS = KeyBindingHelper.registerKeyBinding(new KeyBinding("Открыть настройки", InputUtil.Type.KEYSYM, -1, "ItemCooldown"));
 
     public ItemCooldown() {
         instance = this;
@@ -31,10 +30,6 @@ public class ItemCooldown implements ModInitializer {
         ModConfig.initialize();
         settings = new Settings();
         EventManager.registerEvents();
-    }
-
-    public List<CategoryElement> getCategories() {
-        return new ArrayList<>(categories);
     }
 
     public static ItemCooldown getInstance() {

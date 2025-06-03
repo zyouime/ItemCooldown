@@ -37,28 +37,18 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             NbtCompound itemNbt = this.nbt;
             NbtManager.prepareKeys(compound, itemNbt);
             if (itemNbt.equals(compound) && !this.isDynamicNbt()) {
-                setCooldown(this);
+                this.setCooldown(this.getMaxCooldown());
                 return true;
             } else if (this.isDynamicNbt()) {
                 for (String s : compound.getKeys()) {
                     if (itemNbt.contains(s) && !compound.getCompound(s).isEmpty()) {
-                        setCooldown(this);
+                        this.setCooldown(this.getMaxCooldown());
                         return true;
                     }
                 }
             }
         }
         return false;
-    }
-
-    private void setCooldown(CustomItemCooldown cic) {
-        if (!cic.isSetWhenNoFightMode()) {
-            if (isPvP()) {
-                cic.setCooldown(cic.getMaxCooldown());
-            }
-        } else {
-            cic.setCooldown(cic.getMaxCooldown());
-        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.mixin.BossBarHudAccessor;
+import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -44,6 +45,10 @@ public class EventManager {
 
     private static void tickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (itemCooldown.OPEN_SETTINGS.wasPressed()) {
+                client.setScreen(new MainScreen(client.currentScreen));
+            }
+
             if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() >= 0) item.tick();

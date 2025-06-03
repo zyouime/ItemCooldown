@@ -6,6 +6,7 @@
   "description": "",
   "authors": ["zyouime13"],
   "contact": {
+    "sources": ""
   },
   "license": "MIT",
   "icon": "assets/itemcooldown/icon.png",
@@ -13,6 +14,9 @@
   "entrypoints": {
     "main": [
       "me.zyouime.itemcooldown.ItemCooldown"
+    ],
+    "modmenu": [
+      "me.zyouime.itemcooldown.modmenu.ModMenuImpl"
     ]
   },
   "mixins": [
@@ -22,5 +26,12 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "Змеёныш13": "https://t.me/zyouime13"
+      }
+    }
   }
 }

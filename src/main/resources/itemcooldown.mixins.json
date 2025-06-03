@@ -8,9 +8,7 @@
   ],
   "client": [
     "BossBarHudAccessor",
-    "ChatScreenMixin",
-    "ClientPlayNetworkHandlerMixin",
-    "KeyboardMixin"
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

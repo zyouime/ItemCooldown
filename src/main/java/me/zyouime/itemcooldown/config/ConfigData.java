@@ -51,7 +51,7 @@ public class ConfigData {
         List<AbstractItemCooldown> holyWorldItems = new ArrayList<>();
         holyWorldItems.add(VanillaItemCooldown.builder(Items.ENCHANTED_GOLDEN_APPLE).setX(-50).setY(-100).canUseWhenNoFightMode(true).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.GOLDEN_APPLE).setX(-50).setY(-70).canUseWhenNoFightMode(true).build());
-        holyWorldItems.add(VanillaItemCooldown.builder(Items.CHORUS_FRUIT).setMaxCooldown(15).setX(-25).setY(-70).canUseWhenNoFightMode(true).build());
+        holyWorldItems.add(VanillaItemCooldown.builder(Items.CHORUS_FRUIT).setMaxCooldown(15).setX(-25).setY(-70).hasCustomCooldown(true).setWhenNoFightMode(false).canUseWhenNoFightMode(true).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.PRISMARINE_SHARD).setX(-25).setY(-100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.POPPED_CHORUS_FRUIT).setX(0).setY(-100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.NETHER_STAR).setX(25).setY(-100).build());
