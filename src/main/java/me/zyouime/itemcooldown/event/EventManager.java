@@ -6,6 +6,7 @@ import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.mixin.BossBarHudAccessor;
 import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.util.CooldownManager;
+import me.zyouime.itemcooldown.util.NbtHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
@@ -13,17 +14,16 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class EventManager {
 
@@ -90,6 +90,11 @@ public class EventManager {
 
     private static TypedActionResult<ItemStack> useItem(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
+        if (itemStack.getNbt() != null && !itemStack.getNbt().isEmpty()) {
+            NbtCompound compound = itemStack.getNbt().copy();
+            NbtHelper.removeExtraKeys(compound);
+            System.out.println("USED ITEM: " + compound);
+        }
         if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
             CooldownManager.setCooldownIfNeeded(itemStack);
         }

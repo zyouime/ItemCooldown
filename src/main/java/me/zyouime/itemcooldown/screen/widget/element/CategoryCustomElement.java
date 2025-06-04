@@ -6,13 +6,13 @@ import net.minecraft.client.gui.DrawContext;
 
 import java.awt.*;
 
-public class CategoryElement implements Element {
+public class CategoryCustomElement implements CustomElement {
 
     private ConfigData.Category category;
     private float x, y;
     private Color color;
 
-    public CategoryElement(ConfigData.Category category) {
+    public CategoryCustomElement(ConfigData.Category category) {
         this.category = category;
     }
 

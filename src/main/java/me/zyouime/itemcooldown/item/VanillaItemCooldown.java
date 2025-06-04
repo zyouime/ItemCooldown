@@ -46,6 +46,7 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
         private float y;
         private boolean hasCustomCooldown;
         private boolean resetWhenNoFightMode;
+        //если есть кастом кулдаун помимо ванилки, тогда этот параметр влияет
         private boolean setWhenNoFightMode = true;
         private boolean canUseWhenNoFightMode;
 
@@ -55,6 +56,12 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
 
         public Builder setMaxCooldown(int maxCooldown) {
             this.maxCooldown = maxCooldown;
+            return this;
+        }
+
+        public Builder setPos(float x, float y) {
+            this.x = x;
+            this.y = y;
             return this;
         }
 

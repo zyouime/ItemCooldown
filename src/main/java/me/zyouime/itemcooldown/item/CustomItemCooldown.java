@@ -1,14 +1,12 @@
 package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
-import me.zyouime.itemcooldown.util.items.HolyWorldItems;
-import me.zyouime.itemcooldown.util.NbtManager;
+import me.zyouime.itemcooldown.util.items.CustomItemsNbt;
+import me.zyouime.itemcooldown.util.NbtHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.StringNbtReader;
-
-import static me.zyouime.itemcooldown.event.EventManager.isPvP;
 
 public class CustomItemCooldown extends AbstractItemCooldown {
 
@@ -36,7 +34,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             NbtCompound compound = usedItem.copy().getNbt();
             if (compound == null) return false;
             NbtCompound itemNbt = this.nbt;
-            NbtManager.prepareKeys(compound, itemNbt);
+            NbtHelper.prepareKeys(compound, itemNbt);
             if (itemNbt.equals(compound) && !this.isDynamicNbt()) {
                 this.setCooldown(this.getMaxCooldown());
                 return true;
@@ -76,7 +74,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
         private int maxCooldown;
         private float x;
         private float y;
-        private HolyWorldItems nbt;
+        private CustomItemsNbt nbt;
         private boolean resetWhenNoFightMode;
         private boolean setWhenNoFightMode;
         private boolean canUseWhenNoFightMode;
@@ -91,6 +89,12 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             return this;
         }
 
+        public Builder setPos(float x, float y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
+
         public Builder setX(float x) {
             this.x = x;
             return this;
@@ -101,12 +105,12 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             return this;
         }
 
-        public Builder setNbt(HolyWorldItems nbt) {
+        public Builder setNbt(CustomItemsNbt nbt) {
             this.nbt = nbt;
             return this;
         }
 
-        public Builder setResetWhenNoFightMode(boolean resetWhenNoFightMode) {
+        public Builder resetWhenNoFightMode(boolean resetWhenNoFightMode) {
             this.resetWhenNoFightMode = resetWhenNoFightMode;
             return this;
         }

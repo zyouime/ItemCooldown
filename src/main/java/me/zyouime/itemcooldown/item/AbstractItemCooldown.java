@@ -2,8 +2,6 @@ package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
 import me.zyouime.itemcooldown.ItemCooldown;
-import me.zyouime.itemcooldown.config.ConfigData;
-import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
 import net.minecraft.client.gui.DrawContext;
@@ -26,6 +24,8 @@ public class AbstractItemCooldown {
     protected boolean setWhenNoFightMode;
     @Expose
     protected boolean canUseWhenNoFightMode;
+    @Expose
+    private boolean visible = true;
     private int cooldown;
     public static final float ICON_WIDTH = 20f;
     public static final float ICON_HEIGHT = 24f;
@@ -41,6 +41,7 @@ public class AbstractItemCooldown {
     }
 
     public void render(DrawContext context) {
+        if (!visible) return;
         MatrixStack matrixStack = context.getMatrices();
         float scale = ItemCooldown.getInstance().settings.scale.getValue();
         float sWidth = context.getScaledWindowWidth();
@@ -108,6 +109,14 @@ public class AbstractItemCooldown {
     public void updatePos(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
     public void setWhenNoFightMode(boolean setWhenNoFightMode) {

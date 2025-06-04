@@ -1,6 +1,6 @@
 package me.zyouime.itemcooldown.util.items;
 
-public enum HolyWorldItems {
+public enum CustomItemsNbt {
 
     LONG_TURTLE_MASTER("{Potion:\"minecraft:long_turtle_master\"}"),
     FIRE_CHARGE("{kringeItems:{type:\"ExplosiveStuff\"}}"),
@@ -9,11 +9,13 @@ public enum HolyWorldItems {
     FAREWELL_HUM("{pyrotechnic-item:{name:\"FAREWELL_HUM\"}}"),
     EXP_BOTTLE("{kringeItems:{type:\"ExpBottle\"}}"),
     JAKE_LUMINAIRE("{kringeItems:{type:\"JakeLuminaire\"}}"),
-    FURY_SWORD("{explosive-ability:{}}");
+    FURY_SWORD("{explosive-ability:{}}"),
+    TRAPKA("{don-item:\"trap\",trap:1b}"),
+    AURA("{don-item:\"godsaura\",godsaura:1b}");
 
     public final String nbt;
 
-    HolyWorldItems(String nbt) {
+    CustomItemsNbt(String nbt) {
         this.nbt = nbt;
     }
 }

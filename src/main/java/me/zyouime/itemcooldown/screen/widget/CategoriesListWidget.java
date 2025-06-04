@@ -2,7 +2,7 @@ package me.zyouime.itemcooldown.screen.widget;
 
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.screen.MainScreen;
-import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
+import me.zyouime.itemcooldown.screen.widget.element.CategoryCustomElement;
 import me.zyouime.itemcooldown.setting.CategorySetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -20,7 +20,7 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
 
     public CategoriesListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight, MainScreen screen) {
         super(client, width, height, top, bottom, itemHeight);
-        this.addEntry(new Elements(new CategoryElement(categorySetting.getValue())));
+        this.addEntry(new Elements(new CategoryCustomElement(categorySetting.getValue())));
         this.screen = screen;
     }
 
@@ -81,10 +81,10 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
 
     public static class Elements extends EntryListWidget.Entry<Elements> {
 
-        private final CategoryElement category;
+        private final CategoryCustomElement category;
         private int x, y, width, height;
 
-        public Elements(CategoryElement category) {
+        public Elements(CategoryCustomElement category) {
             this.category = category;
         }
 

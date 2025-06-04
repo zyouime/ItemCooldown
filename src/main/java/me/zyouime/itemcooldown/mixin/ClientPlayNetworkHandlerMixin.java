@@ -1,6 +1,7 @@
 package me.zyouime.itemcooldown.mixin;
 
 import me.zyouime.itemcooldown.ItemCooldown;
+import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import me.zyouime.itemcooldown.util.UseItem;

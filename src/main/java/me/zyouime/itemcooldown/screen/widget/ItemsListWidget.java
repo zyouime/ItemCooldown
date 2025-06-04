@@ -1,6 +1,6 @@
 package me.zyouime.itemcooldown.screen.widget;
 
-import me.zyouime.itemcooldown.screen.widget.element.ItemElement;
+import me.zyouime.itemcooldown.screen.widget.element.ItemCustomElement;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -35,14 +35,14 @@ public class ItemsListWidget extends EntryListWidget<ItemsListWidget.Elements> {
 
     public static class Elements extends EntryListWidget.Entry<Elements> {
 
-        private final ItemElement listElement;
+        private final ItemCustomElement listElement;
         private int currentAlpha;
         private final MinecraftClient client = MinecraftClient.getInstance();
         private int top;
         private int width;
         private int height;
 
-        public Elements(ItemElement listElement) {
+        public Elements(ItemCustomElement listElement) {
             this.listElement = listElement;
         }
 

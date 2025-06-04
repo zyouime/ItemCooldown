@@ -4,13 +4,11 @@ import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.CategoriesListWidget;
-import me.zyouime.itemcooldown.screen.widget.CustomSliderWidget;
-import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
-import me.zyouime.itemcooldown.screen.widget.element.ItemElement;
+import me.zyouime.itemcooldown.screen.widget.element.CategoryCustomElement;
+import me.zyouime.itemcooldown.screen.widget.element.ItemCustomElement;
 import me.zyouime.itemcooldown.screen.widget.ItemsListWidget;
 import me.zyouime.itemcooldown.setting.Setting;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
@@ -23,10 +21,10 @@ import java.util.Map;
 public class MainScreen extends Screen {
 
     private final Screen parent;
-    private final List<CategoryElement> categories = List.of(
-            new CategoryElement(ConfigData.Category.HOLYWORLD),
-            new CategoryElement(ConfigData.Category.FUNTIME),
-            new CategoryElement(ConfigData.Category.CUSTOM)
+    private final List<CategoryCustomElement> categories = List.of(
+            new CategoryCustomElement(ConfigData.Category.HOLYWORLD),
+            new CategoryCustomElement(ConfigData.Category.FUNTIME),
+            new CategoryCustomElement(ConfigData.Category.CUSTOM)
     );
     private final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
 
@@ -43,33 +41,33 @@ public class MainScreen extends Screen {
         ItemsListWidget itemsList = new ItemsListWidget(client, width, height, 96, height - 80, 30);
         if (items.get(category) != null) {
             for (AbstractItemCooldown item : items.get(category)) {
-                ItemElement element = new ItemElement(item, this);
+                ItemCustomElement element = new ItemCustomElement(item, this);
                 element.init();
                 itemsList.addEntry(new ItemsListWidget.Elements(element));
             }
         }
-        //CustomSliderWidget sliderWidget = new CustomSliderWidget(20, height - 30, 120, 20, Text.of("Размеры иконок: "), 1, 3, settings.scale);
         CategoriesListWidget categoriesList = new CategoriesListWidget(client, 80, height, 12, 96, 30, this);
         categoriesList.setLeftPos(width / 2 - 40);
-        for (CategoryElement element : categories) {
-            categoriesList.addEntry(new CategoriesListWidget.Elements(new CategoryElement(element.getCategory())));
+        for (CategoryCustomElement element : categories) {
+            categoriesList.addEntry(new CategoriesListWidget.Elements(new CategoryCustomElement(element.getCategory())));
         }
-        ButtonWidget addItem = ButtonWidget.builder(Text.literal("Добавить"), press ->
+        ButtonWidget addItem = ButtonWidget.builder(Text.literal("Добавить предмет"), press ->
                         client.setScreen(new ItemCooldownScreen(this, null, category)))
-                .dimensions(width / 2 - 35, height - 70, 70, 20)
+                .dimensions(width / 2 - 60, height - 65, 120, 20)
                 .build();
+        ButtonWidget saveAndExit = ButtonWidget.builder(Text.literal("Сохранить и выйти"), press -> this.close()).dimensions(width / 2 - 60, height - 35, 120, 20).build();
         ButtonWidget positionScreen = ButtonWidget.builder(Text.literal("Настроить отображение"), press ->
                         client.setScreen(new PositionScreen(this)))
-                .dimensions(10, height - 60, 140, 20)
+                .dimensions(10, height - 65, 140, 20)
                 .build();
         ButtonWidget modEnabled = ButtonWidget.builder(PositionScreen.getButtonMessage("Включить мод", settings.enabled), press -> {
             settings.enabled.setValue(!settings.enabled.getValue());
             press.setMessage(PositionScreen.getButtonMessage("Включить мод", settings.enabled));
-        }).dimensions(20, height - 30, 120, 20).build();
+        }).dimensions(20, height - 35, 120, 20).build();
         this.addDrawableChild(itemsList);
         this.addDrawableChild(addItem);
         this.addDrawableChild(categoriesList);
-        //this.addDrawableChild(sliderWidget);
+        this.addDrawableChild(saveAndExit);
         this.addDrawableChild(positionScreen);
         this.addDrawableChild(modEnabled);
         super.init();

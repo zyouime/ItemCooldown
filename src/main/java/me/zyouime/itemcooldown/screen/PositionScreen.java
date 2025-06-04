@@ -5,9 +5,9 @@ import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.screen.widget.CustomSliderWidget;
 import me.zyouime.itemcooldown.setting.BooleanSetting;
-import me.zyouime.itemcooldown.setting.Setting;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.Window;
 import net.minecraft.text.Text;
@@ -20,10 +20,8 @@ public class PositionScreen extends Screen {
 
     private final Screen parent;
     private float scale;
-    private float scaledCenterX;
-    private float scaledCenterY;
-    private float scaledWidth;
-    private float scaledHeight;
+    private float centerX;
+    private float centerY;
     private float offsetX;
     private float offsetY;
     private boolean isDragging;
@@ -41,23 +39,23 @@ public class PositionScreen extends Screen {
     public void init() {
         items = settings.items.getValue();
         category = settings.selectedCategory.getValue();
-        Window window = this.client.getWindow();
-        scaledWidth = window.getScaledWidth();
-        scaledHeight = window.getScaledHeight();
-        scaledCenterX = scaledWidth / 2f;
-        scaledCenterY = scaledHeight / 2f;
-        CustomSliderWidget sliderWidget = new CustomSliderWidget((int) scaledCenterX - 115, height - 90, 120, 20, Text.of("Размеры иконок: "), 1, 3, settings.scale);
-        CustomSliderWidget indentSlider = new CustomSliderWidget((int) (scaledCenterX + 15), height - 90, 80, 20, Text.literal("Отступы: "), 0, 5, settings.indent);
+        centerX = width / 2f;
+        centerY = height / 2f;
+        CustomSliderWidget sliderWidget = new CustomSliderWidget((int) centerX - 115, height - 90, 120, 20, Text.of("Размеры иконок: "), 1, 3, settings.scale);
+        CustomSliderWidget indentSlider = new CustomSliderWidget((int) (centerX + 15), height - 90, 80, 20, Text.literal("Отступы: "), 0, 5, settings.indent);
+        indentSlider.setTooltip(Tooltip.of(Text.literal("Расстояние в пикселях, на котором будут находиться иконки при \"прилипании\"")));
         ButtonWidget alignment = ButtonWidget.builder(getButtonMessage("Выравнивание", settings.alignment), press -> {
             settings.alignment.setValue(!settings.alignment.getValue());
             indentSlider.active = settings.alignment.getValue();
             press.setMessage(getButtonMessage("Выравнивание", settings.alignment));
-        }).dimensions((int) scaledCenterX - 100, height - 60, 120, 20).build();
-        ButtonWidget save = ButtonWidget.builder(Text.literal("Сохранить"), press -> this.close()).dimensions((int) scaledCenterX - 40, height - 30, 80, 20).build();
+        }).dimensions((int) centerX - 100, height - 60, 120, 20).build();
+        alignment.setTooltip(Tooltip.of(Text.literal("Включите, если хотите, чтобы иконки \"прилипали\" друг к другу на выбранном отступе")));
+        ButtonWidget save = ButtonWidget.builder(Text.literal("Сохранить"), press -> this.close()).dimensions((int) centerX - 40, height - 30, 80, 20).build();
         ButtonWidget renderBackground = ButtonWidget.builder(getButtonMessage("Фон", settings.renderBackground), press -> {
             settings.renderBackground.setValue(!settings.renderBackground.getValue());
             press.setMessage(getButtonMessage("Фон", settings.renderBackground));
-        }).dimensions((int) scaledCenterX + 30, height - 60, 60, 20).build();
+        }).dimensions((int) centerX + 30, height - 60, 60, 20).build();
+        renderBackground.setTooltip(Tooltip.of(Text.literal("Задний фон иконок")));
         this.addDrawableChild(indentSlider);
         this.addDrawableChild(alignment);
         this.addDrawableChild(save);
@@ -78,8 +76,8 @@ public class PositionScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (items.get(category) != null) {
             for (AbstractItemCooldown item : items.get(category)) {
-                float itemX = Math.max(0, Math.min(scaledCenterX / scale + item.getX(), (scaledWidth / scale) - ICON_WIDTH));
-                float itemY = Math.max(0, Math.min(scaledCenterY / scale + item.getY(), (scaledHeight / scale) - ICON_HEIGHT));
+                float itemX = Math.max(0, Math.min(centerX / scale + item.getX(), (width / scale) - ICON_WIDTH));
+                float itemY = Math.max(0, Math.min(centerY / scale + item.getY(), (height / scale) - ICON_HEIGHT));
                 if (mouseX >= itemX * scale && mouseX <= (itemX + ICON_WIDTH) * scale && mouseY >= itemY * scale && mouseY <= (itemY + ICON_HEIGHT) * scale) {
                     isDragging = true;
                     offsetX = (float) mouseX - (itemX * scale);
@@ -95,12 +93,12 @@ public class PositionScreen extends Screen {
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (isDragging && draggingItem != null && items.get(category) != null) {
-            float x = ((float) mouseX - scaledCenterX - offsetX) / scale;
-            float y = ((float) mouseY - scaledCenterY - offsetY) / scale;
-            float minX = -scaledCenterX / scale;
-            float minY = -scaledCenterY / scale;
-            float maxX = (scaledCenterX / scale) - ICON_WIDTH;
-            float maxY = (scaledCenterY / scale) - ICON_HEIGHT;
+            float x = ((float) mouseX - centerX - offsetX) / scale;
+            float y = ((float) mouseY - centerY - offsetY) / scale;
+            float minX = -centerX / scale;
+            float minY = -centerY / scale;
+            float maxX = (centerX / scale) - ICON_WIDTH;
+            float maxY = (centerY / scale) - ICON_HEIGHT;
             x = Math.max(minX, Math.min(x, maxX));
             y = Math.max(minY, Math.min(y, maxY));
             float indent = settings.indent.getValue();
