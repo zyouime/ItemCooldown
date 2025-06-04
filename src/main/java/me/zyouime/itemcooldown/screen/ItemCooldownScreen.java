@@ -14,11 +14,13 @@ public class ItemCooldownScreen extends Screen {
     private final Screen parent;
     private final AbstractItemCooldown item;
     private float centerX, centerY;
+    private final ConfigData.Category category;
 
     public ItemCooldownScreen(Screen parent, AbstractItemCooldown item, ConfigData.Category category) {
         super(Text.empty());
         this.parent = parent;
         this.item = item;
+        this.category = category;
     }
 
     @Override
@@ -31,8 +33,11 @@ public class ItemCooldownScreen extends Screen {
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
         if (item == null) {
-            RenderHelper.drawCenteredXYText(context, centerX, 30, 1.5f, "Держите в активной руке предмет, который хотите добавить!!!", Color.WHITE);
+            RenderHelper.drawCenteredXYText(context, centerX, 30, 1.5f, "Держите в основной руке предмет, который хотите добавить!!!", Color.WHITE);
+        } else {
+            RenderHelper.drawCenteredXYText(context, centerX, 30, 1.5f, "Редактирование предмета из категории " + category.name, Color.WHITE);
         }
+
         super.render(context, mouseX, mouseY, delta);
     }
 

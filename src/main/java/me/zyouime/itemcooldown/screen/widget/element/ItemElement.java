@@ -36,7 +36,8 @@ public class ItemElement implements Element {
 
     public void init() {
         MinecraftClient client = MinecraftClient.getInstance();
-        settingButton = ButtonWidget.builder(Text.literal("⚙"), press -> client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ItemCooldown.getInstance().settings.selectedCategory.getValue())))
+        settingButton = ButtonWidget.builder(Text.literal("⚙"), press ->
+                        client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ItemCooldown.getInstance().settings.selectedCategory.getValue())))
                 .dimensions(0, 0, 20, 20)
                 .build();
         deleteButton = ButtonWidget.builder(Text.literal("Удалить"), press -> {

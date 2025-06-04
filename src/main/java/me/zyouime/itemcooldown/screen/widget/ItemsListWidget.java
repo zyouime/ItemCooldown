@@ -46,7 +46,6 @@ public class ItemsListWidget extends EntryListWidget<ItemsListWidget.Elements> {
             this.listElement = listElement;
         }
 
-
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             listElement.updatePos(x, y);

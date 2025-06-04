@@ -21,6 +21,14 @@ public class ConfigData {
     Map<Category, List<AbstractItemCooldown>> items = new HashMap<>();
     @Expose
     Category selectedCategory = Category.HOLYWORLD;
+    @Expose
+    boolean enabled = true;
+    @Expose
+    boolean renderBackground = true;
+    @Expose
+    boolean alignment = true;
+    @Expose
+    float indent = 1.5f;
 
     public ConfigData() {
         items.put(Category.HOLYWORLD, fillHolyWorldItems());

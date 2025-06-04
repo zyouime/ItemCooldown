@@ -31,6 +31,10 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
         return hasCustomCooldown;
     }
 
+    public void hasCustomCooldown(boolean hasCustomCooldown) {
+        this.hasCustomCooldown = hasCustomCooldown;
+    }
+
     public static Builder builder(Item item) {
         return new Builder(new ItemStack(item));
     }

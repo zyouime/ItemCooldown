@@ -1,5 +1,6 @@
 package me.zyouime.itemcooldown.mixin;
 
+import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.util.UseItem;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
@@ -25,21 +26,21 @@ public abstract class LivingEntityMixin implements UseItem {
 
     @Inject(method = "consumeItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;finishUsing(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;", shift = At.Shift.BEFORE))
     private void consumeItem(CallbackInfo ci) {
-        if (isClientPlayer()) {
+        if (isClientPlayerAndIfEnabled()) {
             this.prevItem = this.activeItemStack.copy();
         }
     }
 
     @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("RETURN"))
     private void swingHand(Hand hand, CallbackInfo ci) {
-        if (isClientPlayer()) {
+        if (isClientPlayerAndIfEnabled()) {
             this.prevItem = this.getStackInHand(hand).copy();
         }
     }
 
     @Unique
-    private boolean isClientPlayer() {
-        return livingEntity instanceof ClientPlayerEntity;
+    private boolean isClientPlayerAndIfEnabled() {
+        return livingEntity instanceof ClientPlayerEntity && ItemCooldown.getInstance().settings.enabled.getValue();
     }
 
     @Override

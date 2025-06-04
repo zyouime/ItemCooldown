@@ -27,6 +27,8 @@ public class AbstractItemCooldown {
     @Expose
     protected boolean canUseWhenNoFightMode;
     private int cooldown;
+    public static final float ICON_WIDTH = 20f;
+    public static final float ICON_HEIGHT = 24f;
 
     protected AbstractItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean resetWhenNoFightMode, boolean setWhenNoFightMode, boolean canUseWhenNoFightMode) {
         this.item = item;
@@ -45,19 +47,21 @@ public class AbstractItemCooldown {
         float sHeight = context.getScaledWindowHeight();
         float centerX = sWidth / 2f;
         float centerY = sHeight / 2f;
-        float maxX = (sWidth / scale) - 20;
-        float maxY = (sHeight / scale) - 24;
+        float maxX = (sWidth / scale) - ICON_WIDTH;
+        float maxY = (sHeight / scale) - ICON_HEIGHT;
         float renderX = Math.max(0, Math.min(centerX / scale + x, maxX));
         float renderY = Math.max(0, Math.min(centerY / scale + y, maxY));
         matrixStack.push();
         matrixStack.scale(scale, scale, 1.0f);
-        RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
+        if (ItemCooldown.getInstance().settings.renderBackground.getValue()) {
+            RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
+        }
         RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
         matrixStack.pop();
         int seconds = cooldown / 20;
         String text = String.valueOf(seconds);
         float textX = renderX * scale + (20 * scale - RenderHelper.textRenderer.getWidth(text) * (scale / 2f)) / 2f;
-        RenderHelper.drawCenteredYText(context, textX, (renderY + 16) * scale, scale / 2f, text, Color.YELLOW);
+        RenderHelper.drawCenteredYText(context, textX, (renderY + 17) * scale, scale / 2f, text, Color.YELLOW);
     }
 
 
@@ -104,6 +108,26 @@ public class AbstractItemCooldown {
     public void updatePos(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void setWhenNoFightMode(boolean setWhenNoFightMode) {
+        this.setWhenNoFightMode = setWhenNoFightMode;
+    }
+
+    public void canUseWhenNoFightMode(boolean canUseWhenNoFightMode) {
+        this.canUseWhenNoFightMode = canUseWhenNoFightMode;
+    }
+
+    public void resetWhenNoFightMode(boolean resetWhenNoFightMode) {
+        this.resetWhenNoFightMode = resetWhenNoFightMode;
+    }
+
+    public void setMaxCooldown(int maxCooldown) {
+        this.maxCooldown = maxCooldown;
+    }
+
+    public void setItem(ItemStack item) {
+        this.item = item;
     }
 
     public boolean shouldSetCooldown(ItemStack usedItem) {

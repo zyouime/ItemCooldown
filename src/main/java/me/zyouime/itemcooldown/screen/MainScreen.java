@@ -28,6 +28,8 @@ public class MainScreen extends Screen {
             new CategoryElement(ConfigData.Category.FUNTIME),
             new CategoryElement(ConfigData.Category.CUSTOM)
     );
+    private final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
+
 
     public MainScreen(Screen parent) {
         super(Text.empty());
@@ -36,8 +38,8 @@ public class MainScreen extends Screen {
 
     @Override
     protected void init() {
-        Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
-        ConfigData.Category category = ItemCooldown.getInstance().settings.selectedCategory.getValue();
+        Map<ConfigData.Category, List<AbstractItemCooldown>> items = settings.items.getValue();
+        ConfigData.Category category = settings.selectedCategory.getValue();
         ItemsListWidget itemsList = new ItemsListWidget(client, width, height, 96, height - 80, 30);
         if (items.get(category) != null) {
             for (AbstractItemCooldown item : items.get(category)) {
@@ -46,7 +48,7 @@ public class MainScreen extends Screen {
                 itemsList.addEntry(new ItemsListWidget.Elements(element));
             }
         }
-        CustomSliderWidget sliderWidget = new CustomSliderWidget(20, height - 30, 120, 20, Text.of("Размеры иконок: "), 1, 3, ItemCooldown.getInstance().settings.scale);
+        //CustomSliderWidget sliderWidget = new CustomSliderWidget(20, height - 30, 120, 20, Text.of("Размеры иконок: "), 1, 3, settings.scale);
         CategoriesListWidget categoriesList = new CategoriesListWidget(client, 80, height, 12, 96, 30, this);
         categoriesList.setLeftPos(width / 2 - 40);
         for (CategoryElement element : categories) {
@@ -54,17 +56,22 @@ public class MainScreen extends Screen {
         }
         ButtonWidget addItem = ButtonWidget.builder(Text.literal("Добавить"), press ->
                         client.setScreen(new ItemCooldownScreen(this, null, category)))
-                .dimensions(width / 2 - 35, height - 60, 70, 20)
+                .dimensions(width / 2 - 35, height - 70, 70, 20)
                 .build();
-        ButtonWidget positionScreen = ButtonWidget.builder(Text.literal("Настроить положение"), press ->
+        ButtonWidget positionScreen = ButtonWidget.builder(Text.literal("Настроить отображение"), press ->
                         client.setScreen(new PositionScreen(this)))
-                .dimensions(20, height - 60, 120, 20)
+                .dimensions(10, height - 60, 140, 20)
                 .build();
+        ButtonWidget modEnabled = ButtonWidget.builder(PositionScreen.getButtonMessage("Включить мод", settings.enabled), press -> {
+            settings.enabled.setValue(!settings.enabled.getValue());
+            press.setMessage(PositionScreen.getButtonMessage("Включить мод", settings.enabled));
+        }).dimensions(20, height - 30, 120, 20).build();
         this.addDrawableChild(itemsList);
         this.addDrawableChild(addItem);
         this.addDrawableChild(categoriesList);
-        this.addDrawableChild(sliderWidget);
+        //this.addDrawableChild(sliderWidget);
         this.addDrawableChild(positionScreen);
+        this.addDrawableChild(modEnabled);
         super.init();
     }
 
@@ -81,7 +88,7 @@ public class MainScreen extends Screen {
 
     @Override
     public void close() {
-        ItemCooldown.getInstance().settings.settingsList.forEach(Setting::save);
+        settings.settingsList.forEach(Setting::save);
         client.setScreen(parent);
     }
 

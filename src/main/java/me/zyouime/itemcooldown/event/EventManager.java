@@ -20,6 +20,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class EventManager {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
             if (MinecraftClient.getInstance().currentScreen instanceof ChatScreen) return;
             if (items.get(selectedCategory) == null) return;
+            if (!itemCooldown.settings.enabled.getValue()) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
                     item.render(drawContext);
@@ -48,7 +50,6 @@ public class EventManager {
             if (itemCooldown.OPEN_SETTINGS.wasPressed()) {
                 client.setScreen(new MainScreen(client.currentScreen));
             }
-
             if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
@@ -82,17 +83,14 @@ public class EventManager {
 
     public static boolean isPvP() {
         BossBarHudAccessor bossBar = (BossBarHudAccessor) MinecraftClient.getInstance().inGameHud.getBossBarHud();
-        for (Map.Entry<UUID, BossBar> entry : bossBar.getBossBars().entrySet()) {
-            for (String pvpType : PVP_TYPES) {
-                if (entry.getValue().getName().getString().toLowerCase().contains(pvpType)) return true;
-            }
-        }
-        return false;
+        return bossBar.getBossBars().values().stream().anyMatch(boss ->
+                Arrays.stream(PVP_TYPES).anyMatch(pvpType ->
+                        boss.getName().getString().toLowerCase().contains(pvpType)));
     }
 
     private static TypedActionResult<ItemStack> useItem(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.isFood() && !itemStack.isOf(Items.POTION)) {
+        if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
             CooldownManager.setCooldownIfNeeded(itemStack);
         }
         return TypedActionResult.pass(itemStack);

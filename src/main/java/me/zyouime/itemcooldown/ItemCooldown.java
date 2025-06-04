@@ -1,13 +1,8 @@
 package me.zyouime.itemcooldown;
 
-import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.config.ModConfig;
 import me.zyouime.itemcooldown.event.EventManager;
-import me.zyouime.itemcooldown.screen.widget.element.CategoryElement;
-import me.zyouime.itemcooldown.setting.CategorySetting;
-import me.zyouime.itemcooldown.setting.ItemsSetting;
-import me.zyouime.itemcooldown.setting.NumberSetting;
-import me.zyouime.itemcooldown.setting.Setting;
+import me.zyouime.itemcooldown.setting.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -42,6 +37,10 @@ public class ItemCooldown implements ModInitializer {
         public ItemsSetting items = register(new ItemsSetting("items"));
         public NumberSetting scale = register(new NumberSetting("scale"));
         public CategorySetting selectedCategory = register(new CategorySetting("selectedCategory"));
+        public BooleanSetting enabled = register(new BooleanSetting("enabled"));
+        public BooleanSetting renderBackground = register(new BooleanSetting("renderBackground"));
+        public BooleanSetting alignment = register(new BooleanSetting("alignment"));
+        public NumberSetting indent = register(new NumberSetting("indent"));
 
         private <T extends Setting<?>> T register(T t) {
             this.settingsList.add(t);
