@@ -12,9 +12,12 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
+import net.minecraft.client.gui.screen.ConfirmLinkScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +32,7 @@ public class MainScreen extends Screen {
     );
     private final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
     private ItemsListWidget itemsList;
+    private final Identifier TELEGRAM = new Identifier("itemcooldown", "telegram.png");
 
     public MainScreen(Screen parent) {
         super(Text.empty());
@@ -82,6 +86,7 @@ public class MainScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackgroundTexture(context);
+        context.drawTexture(TELEGRAM, width - 37, height - 37, 27, 27, 0, 0, 128, 128, 128, 128);
         super.render(context, mouseX, mouseY, delta);
     }
 
@@ -89,6 +94,21 @@ public class MainScreen extends Screen {
     public void close() {
         settings.settingsList.forEach(Setting::save);
         client.setScreen(parent);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (mouseX >= width - 37 && mouseX <= width - 10 && mouseY >= height - 37 && mouseY <= height - 10) {
+            client.setScreen(new ConfirmLinkScreen(isConfirmed -> {
+                if (isConfirmed) {
+                    Util.getOperatingSystem().open("https://t.me/zyouime13");
+                } else {
+                    client.setScreen(this);
+                }
+            }, Text.literal("§bЗмееныш13"),"https://t.me/zyouime13",true));
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

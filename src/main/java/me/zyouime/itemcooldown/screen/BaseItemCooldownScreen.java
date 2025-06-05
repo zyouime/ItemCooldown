@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public abstract class BaseItemCooldownScreen extends Screen {
+
     protected final Screen parent;
     protected final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
     protected int centerX, centerY;
@@ -47,7 +48,6 @@ public abstract class BaseItemCooldownScreen extends Screen {
         createOptionWidgets();
         createSaveAndExitWidgets();
         setWidgetsActive();
-        addWidgets();
     }
 
     @Override
@@ -102,9 +102,6 @@ public abstract class BaseItemCooldownScreen extends Screen {
         maxCooldownField.setPlaceholder(Text.literal("§7" + maxCooldown));
         maxCooldownField.setTooltip(Tooltip.of(Text.literal("Кулдаун, который навешивается при использовании предмета"
                 + "\n(Только для кастомных предметов или ванильных с кастомным кулдауном)")));
-    }
-
-    private void addWidgets() {
         this.addDrawableChild(resetWhenNoFightModeButton);
         this.addDrawableChild(setWhenNoFightModeButton);
         this.addDrawableChild(hasCustomCooldownButton);

@@ -3,7 +3,7 @@
   "id": "itemcooldown",
   "version": "${version}",
   "name": "ItemCooldown",
-  "description": "",
+  "description": "Мод на отображение кулдауна кастомных предметов из серверов",
   "authors": ["zyouime13"],
   "contact": {
     "sources": "https://github.com/zyouime/ItemCooldown"
