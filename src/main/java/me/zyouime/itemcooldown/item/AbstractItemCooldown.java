@@ -134,7 +134,7 @@ public class AbstractItemCooldown {
     }
 
     private Color getTextColor() {
-        return !ItemCooldown.getInstance().settings.renderBackground.getValue() && !EventManager.isPvP() ? Color.GREEN : Color.YELLOW;
+        return !ItemCooldown.getInstance().settings.renderBackground.getValue() && canUseWhenNoFightMode && !EventManager.isPvP() ? Color.GREEN : Color.YELLOW;
     }
 
     private Color getBackgroundColor() {
