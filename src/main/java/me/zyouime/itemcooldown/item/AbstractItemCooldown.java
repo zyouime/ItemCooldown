@@ -105,11 +105,6 @@ public class AbstractItemCooldown {
         this.y = y;
     }
 
-    public void updatePos(float x, float y) {
-        this.x = x;
-        this.y = y;
-    }
-
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
@@ -118,20 +113,8 @@ public class AbstractItemCooldown {
         return visible;
     }
 
-    public void setWhenNoFightMode(boolean setWhenNoFightMode) {
-        this.setWhenNoFightMode = setWhenNoFightMode;
-    }
-
-    public void canUseWhenNoFightMode(boolean canUseWhenNoFightMode) {
-        this.canUseWhenNoFightMode = canUseWhenNoFightMode;
-    }
-
-    public void resetWhenNoFightMode(boolean resetWhenNoFightMode) {
-        this.resetWhenNoFightMode = resetWhenNoFightMode;
-    }
-
-    public void setMaxCooldown(int maxCooldown) {
-        this.maxCooldown = maxCooldown;
+    public boolean isCanUseWhenNoFightMode() {
+        return canUseWhenNoFightMode;
     }
 
     public void setItem(ItemStack item) {

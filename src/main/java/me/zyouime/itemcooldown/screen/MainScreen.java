@@ -11,6 +11,7 @@ import me.zyouime.itemcooldown.setting.Setting;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
@@ -27,7 +28,7 @@ public class MainScreen extends Screen {
             new CategoryCustomElement(ConfigData.Category.CUSTOM)
     );
     private final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
-
+    private ItemsListWidget itemsList;
 
     public MainScreen(Screen parent) {
         super(Text.empty());
@@ -38,7 +39,7 @@ public class MainScreen extends Screen {
     protected void init() {
         Map<ConfigData.Category, List<AbstractItemCooldown>> items = settings.items.getValue();
         ConfigData.Category category = settings.selectedCategory.getValue();
-        ItemsListWidget itemsList = new ItemsListWidget(client, width, height, 96, height - 80, 30);
+        itemsList = new ItemsListWidget(client, width, height, 96, height - 80, 30);
         if (items.get(category) != null) {
             for (AbstractItemCooldown item : items.get(category)) {
                 ItemCustomElement element = new ItemCustomElement(item, this);
@@ -92,6 +93,13 @@ public class MainScreen extends Screen {
 
     @Override
     public void clearAndInit() {
-        super.clearAndInit();
+        double scroll = itemsList.getScrollAmount();
+        this.clearChildren();
+        GuiNavigationPath guiNavigationPath = this.getFocusedPath();
+        if (guiNavigationPath != null) {
+            guiNavigationPath.setFocused(false);
+        }
+        this.init();
+        itemsList.setScrollAmount(scroll);
     }
 }
