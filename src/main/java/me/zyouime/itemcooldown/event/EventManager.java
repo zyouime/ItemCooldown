@@ -34,7 +34,6 @@ public class EventManager {
 
     private static void hudRenderEvent() {
         HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
-            if (MinecraftClient.getInstance().currentScreen instanceof ChatScreen) return;
             if (items.get(selectedCategory) == null) return;
             if (!itemCooldown.settings.enabled.getValue()) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
