@@ -90,11 +90,6 @@ public class EventManager {
 
     private static TypedActionResult<ItemStack> useItem(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (itemStack.getNbt() != null && !itemStack.getNbt().isEmpty()) {
-            NbtCompound compound = itemStack.getNbt().copy();
-            NbtHelper.removeExtraKeys(compound);
-            System.out.println("USED ITEM: " + compound);
-        }
         if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
             CooldownManager.setCooldownIfNeeded(itemStack);
         }

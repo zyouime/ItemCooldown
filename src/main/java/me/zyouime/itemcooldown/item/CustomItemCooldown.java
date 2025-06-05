@@ -18,7 +18,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
     private CustomItemCooldown(Builder builder) {
         super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode);
         try {
-            this.nbt = StringNbtReader.parse(builder.nbt.nbt);
+            this.nbt = StringNbtReader.parse(builder.nbt);
         } catch (Exception e) {
             System.err.println("залупа!: " + e.getMessage());
             this.nbt = null;
@@ -74,7 +74,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
         private int maxCooldown;
         private float x;
         private float y;
-        private CustomItemsNbt nbt;
+        private String nbt;
         private boolean resetWhenNoFightMode;
         private boolean setWhenNoFightMode;
         private boolean canUseWhenNoFightMode;
@@ -106,6 +106,11 @@ public class CustomItemCooldown extends AbstractItemCooldown {
         }
 
         public Builder setNbt(CustomItemsNbt nbt) {
+            this.nbt = nbt.nbt;
+            return this;
+        }
+
+        public Builder setNbt(String nbt) {
             this.nbt = nbt;
             return this;
         }

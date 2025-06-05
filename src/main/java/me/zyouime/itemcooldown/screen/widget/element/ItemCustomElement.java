@@ -2,7 +2,7 @@ package me.zyouime.itemcooldown.screen.widget.element;
 
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
-import me.zyouime.itemcooldown.screen.ItemCooldownScreen;
+import me.zyouime.itemcooldown.screen.EditItemCooldownScreen;
 import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
 import net.minecraft.client.MinecraftClient;
@@ -43,7 +43,7 @@ public class ItemCustomElement implements CustomElement {
     public void init() {
         MinecraftClient client = MinecraftClient.getInstance();
         settingButton = ButtonWidget.builder(Text.literal("⚙"), press ->
-                        client.setScreen(new ItemCooldownScreen(client.currentScreen, item, ItemCooldown.getInstance().settings.selectedCategory.getValue())))
+                        client.setScreen(new EditItemCooldownScreen(client.currentScreen, item)))
                 .dimensions(mainScreen.width - 170, 0, 20, 20)
                 .build();
         deleteButton = ButtonWidget.builder(Text.literal("Удалить"), press -> {

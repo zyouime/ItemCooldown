@@ -9,9 +9,7 @@ public enum CustomItemsNbt {
     FAREWELL_HUM("{pyrotechnic-item:{name:\"FAREWELL_HUM\"}}"),
     EXP_BOTTLE("{kringeItems:{type:\"ExpBottle\"}}"),
     JAKE_LUMINAIRE("{kringeItems:{type:\"JakeLuminaire\"}}"),
-    FURY_SWORD("{explosive-ability:{}}"),
-    TRAPKA("{don-item:\"trap\",trap:1b}"),
-    AURA("{don-item:\"godsaura\",godsaura:1b}");
+    FURY_SWORD("{explosive-ability:{}}");
 
     public final String nbt;
 

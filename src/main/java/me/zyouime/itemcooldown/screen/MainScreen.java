@@ -52,7 +52,7 @@ public class MainScreen extends Screen {
             categoriesList.addEntry(new CategoriesListWidget.Elements(new CategoryCustomElement(element.getCategory())));
         }
         ButtonWidget addItem = ButtonWidget.builder(Text.literal("Добавить предмет"), press ->
-                        client.setScreen(new ItemCooldownScreen(this, null, category)))
+                        client.setScreen(new CreateItemCooldownScreen(this)))
                 .dimensions(width / 2 - 60, height - 65, 120, 20)
                 .build();
         ButtonWidget saveAndExit = ButtonWidget.builder(Text.literal("Сохранить и выйти"), press -> this.close()).dimensions(width / 2 - 60, height - 35, 120, 20).build();

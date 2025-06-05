@@ -55,16 +55,15 @@ public class AbstractItemCooldown {
         matrixStack.push();
         matrixStack.scale(scale, scale, 1.0f);
         if (ItemCooldown.getInstance().settings.renderBackground.getValue()) {
-            RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, 20, 24, 3, this.getBackgroundColor());
+            RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, ICON_WIDTH, ICON_HEIGHT, 3, getBackgroundColor());
         }
         RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
         matrixStack.pop();
         int seconds = cooldown / 20;
         String text = String.valueOf(seconds);
         float textX = renderX * scale + (20 * scale - RenderHelper.textRenderer.getWidth(text) * (scale / 2f)) / 2f;
-        RenderHelper.drawCenteredYText(context, textX, (renderY + 17) * scale, scale / 2f, text, Color.YELLOW);
+        RenderHelper.drawCenteredYText(context, textX, (renderY + 17) * scale, scale / 2f, text, getTextColor());
     }
-
 
     public void tick() {
         --cooldown;
@@ -149,6 +148,10 @@ public class AbstractItemCooldown {
 
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
+    }
+
+    private Color getTextColor() {
+        return !ItemCooldown.getInstance().settings.renderBackground.getValue() && !EventManager.isPvP() ? Color.GREEN : Color.YELLOW;
     }
 
     private Color getBackgroundColor() {

@@ -33,6 +33,7 @@ public class ConfigData {
     public ConfigData() {
         items.put(Category.HOLYWORLD, fillHolyWorldItems());
         items.put(Category.FUNTIME, fillFunTimeItems());
+        items.put(Category.CUSTOM, new ArrayList<>());
     }
 
     public void setField(String fieldName, Object value) {
