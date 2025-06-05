@@ -1,6 +1,7 @@
 package me.zyouime.itemcooldown.item;
 
 import com.google.gson.annotations.Expose;
+import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.util.items.CustomItemsNbt;
 import me.zyouime.itemcooldown.util.NbtHelper;
 import net.minecraft.item.Item;
@@ -36,8 +37,11 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             NbtCompound itemNbt = this.nbt;
             NbtHelper.prepareKeys(compound, itemNbt);
             if (itemNbt.equals(compound) && !this.isDynamicNbt()) {
-                this.setCooldown(this.getMaxCooldown());
-                return true;
+                boolean canSetCd = this.isSetWhenNoFightMode() || EventManager.isPvP();
+                if (canSetCd) {
+                    this.setCooldown(this.getMaxCooldown());
+                    return true;
+                }
             } else if (this.isDynamicNbt()) {
                 for (String s : compound.getKeys()) {
                     if (itemNbt.contains(s) && !compound.getCompound(s).isEmpty()) {
