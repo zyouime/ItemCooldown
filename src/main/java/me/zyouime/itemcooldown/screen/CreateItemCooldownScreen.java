@@ -37,10 +37,6 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
     protected void initFields() {
         this.i = 0;
         this.itemType = ItemTypes.VANILLA;
-        this.resetWhenNoFightMode = false;
-        this.setWhenNoFightMode = false;
-        this.canUseWhenNoFightMode = false;
-        this.hasCustomCooldown = false;
         this.maxCooldown = 0;
     }
 
@@ -65,6 +61,7 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
                                 .setWhenNoFightMode(setWhenNoFightMode)
                                 .resetWhenNoFightMode(resetWhenNoFightMode)
                                 .canUseWhenNoFightMode(canUseWhenNoFightMode)
+                                .resetWhenLeftTheServer(resetWhenLeftTheServer)
                                 .build();
                     } else {
                         NbtCompound tag = stackInHand.getNbt().copy();
@@ -75,14 +72,15 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
                                 .setWhenNoFightMode(setWhenNoFightMode)
                                 .canUseWhenNoFightMode(canUseWhenNoFightMode)
                                 .resetWhenNoFightMode(resetWhenNoFightMode)
+                                .resetWhenLeftTheServer(resetWhenLeftTheServer)
                                 .setNbt(tag.toString())
                                 .build();
                     }
                     settings.items.getValue().get(settings.selectedCategory.getValue()).add(newItem);
                     close();
-                }).dimensions(centerX - 160, centerY + 100, BUTTON_WIDTH, BUTTON_HEIGHT).build();
+                }).dimensions(centerX - 160, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
         ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close())
-                .dimensions(centerX + 10, centerY + 100, BUTTON_WIDTH, BUTTON_HEIGHT)
+                .dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT)
                 .build();
         this.addDrawableChild(saveAndExitButton);
         this.addDrawableChild(cancelAndExit);

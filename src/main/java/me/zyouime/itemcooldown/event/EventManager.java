@@ -5,8 +5,6 @@ import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.mixin.BossBarHudAccessor;
 import me.zyouime.itemcooldown.screen.MainScreen;
-import me.zyouime.itemcooldown.setting.CategorySetting;
-import me.zyouime.itemcooldown.setting.ItemsSetting;
 import me.zyouime.itemcooldown.util.CooldownManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -26,9 +24,6 @@ import java.util.Map;
 
 public class EventManager {
 
-    private static final ItemCooldown itemCooldown = ItemCooldown.getInstance();
-    private static final ItemsSetting itemsSetting = itemCooldown.settings.items;
-    private static final CategorySetting selectedCategorySetting = itemCooldown.settings.selectedCategory;
     private static final String[] PVP_TYPES = new String[]{"режим боя", "пвп", "pvp"};
 
     public static void registerEvents() {
@@ -40,9 +35,9 @@ public class EventManager {
 
     private static void registerHudRenderEvent() {
         HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
-            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
-            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
-            if (!itemCooldown.settings.enabled.getValue()) return;
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
+            ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
+            if (!ItemCooldown.getInstance().settings.enabled.getValue()) return;
             if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
@@ -54,11 +49,11 @@ public class EventManager {
 
     private static void registerTickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (itemCooldown.OPEN_SETTINGS.wasPressed()) {
+            if (ItemCooldown.getInstance().OPEN_SETTINGS.wasPressed()) {
                 client.setScreen(new MainScreen(client.currentScreen));
             }
-            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
-            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
+            ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
                 if (item.isResetWhenNoFightMode() && !isPvP()) {
@@ -70,11 +65,11 @@ public class EventManager {
 
     private static void registerJoinEvent() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
-            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
+            ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
             List<AbstractItemCooldown> cooldownItems = items.get(selectedCategory);
             for (AbstractItemCooldown item : cooldownItems) {
-                item.setCooldown(0);
+                if (item.isResetWhenLeftTheServer()) item.setCooldown(0);
             }
         });
     }

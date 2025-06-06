@@ -17,7 +17,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
     private boolean dynamicNbt;
 
     private CustomItemCooldown(Builder builder) {
-        super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode);
+        super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode, builder.resetWhenLeftTheServer);
         try {
             this.nbt = StringNbtReader.parse(builder.nbt);
         } catch (Exception e) {
@@ -83,6 +83,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
         private boolean setWhenNoFightMode;
         private boolean canUseWhenNoFightMode;
         private boolean dynamicNbt;
+        private boolean resetWhenLeftTheServer = true;
 
         public Builder(ItemStack item) {
             this.item = item;
@@ -106,6 +107,11 @@ public class CustomItemCooldown extends AbstractItemCooldown {
 
         public Builder setY(float y) {
             this.y = y;
+            return this;
+        }
+
+        public Builder resetWhenLeftTheServer(boolean resetWhenLeftTheServer) {
+            this.resetWhenLeftTheServer = resetWhenLeftTheServer;
             return this;
         }
 

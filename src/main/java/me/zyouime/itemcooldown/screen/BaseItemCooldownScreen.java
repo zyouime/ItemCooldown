@@ -25,12 +25,14 @@ public abstract class BaseItemCooldownScreen extends Screen {
     protected boolean setWhenNoFightMode;
     protected boolean canUseWhenNoFightMode;
     protected boolean hasCustomCooldown;
+    protected boolean resetWhenLeftTheServer = true;
     protected int maxCooldown;
     protected ButtonWidget itemTypeButton;
     protected ButtonWidget resetWhenNoFightModeButton;
     protected ButtonWidget setWhenNoFightModeButton;
     protected ButtonWidget canUseWhenNoFightModeButton;
     protected ButtonWidget hasCustomCooldownButton;
+    protected ButtonWidget resetWhenLeftTheServerButton;
     protected TextFieldWidget maxCooldownField;
     protected final int BUTTON_WIDTH = 160;
     protected final int BUTTON_HEIGHT = 20;
@@ -97,10 +99,11 @@ public abstract class BaseItemCooldownScreen extends Screen {
             }, Text.literal("Выберите, если на ванильном предмете есть кастомный кулдаун"
                         + "\nПример: на холике если хорус использовать в режиме боя, то на него навешивается 15 сек дополнительного кд,"
                         + "\nкоторое визуально не отображается"));
+        resetWhenLeftTheServerButton = createOptionButton(100, "ResetWhenLeftTheServer", () -> this.resetWhenLeftTheServer, newValue -> resetWhenLeftTheServer = newValue, Text.literal("Выберите, если после выхода из сервера (анки) кд на предмет сбрасывается"));
         maxCooldownField = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, centerX - BUTTON_WIDTH / 2, centerY + 40, BUTTON_WIDTH, BUTTON_HEIGHT, Text.empty());
         maxCooldownField.setChangedListener(this::changedListener);
         maxCooldownField.setPlaceholder(Text.literal("§7" + maxCooldown));
-        maxCooldownField.setTooltip(Tooltip.of(Text.literal("Кулдаун, который навешивается при использовании предмета"
+        maxCooldownField.setTooltip(Tooltip.of(Text.literal("Кулдаун, который навешивается при использовании предмета в секундах"
                 + "\n(Только для кастомных предметов или ванильных с кастомным кулдауном)")));
         this.addDrawableChild(resetWhenNoFightModeButton);
         this.addDrawableChild(setWhenNoFightModeButton);
@@ -108,6 +111,7 @@ public abstract class BaseItemCooldownScreen extends Screen {
         this.addDrawableChild(maxCooldownField);
         this.addDrawableChild(canUseWhenNoFightModeButton);
         this.addDrawableChild(itemTypeButton);
+        this.addDrawableChild(resetWhenLeftTheServerButton);
     }
 
     private Text setItemType() {

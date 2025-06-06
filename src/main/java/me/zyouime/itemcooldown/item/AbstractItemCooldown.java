@@ -26,11 +26,13 @@ public class AbstractItemCooldown {
     protected boolean canUseWhenNoFightMode;
     @Expose
     private boolean visible = true;
+    @Expose
+    private boolean resetWhenLeftTheServer;
     private int cooldown;
     public static final float ICON_WIDTH = 20f;
     public static final float ICON_HEIGHT = 24f;
 
-    protected AbstractItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean resetWhenNoFightMode, boolean setWhenNoFightMode, boolean canUseWhenNoFightMode) {
+    protected AbstractItemCooldown(ItemStack item, int maxCooldown, float x, float y, boolean resetWhenNoFightMode, boolean setWhenNoFightMode, boolean canUseWhenNoFightMode, boolean resetWhenLeftTheServer) {
         this.item = item;
         this.maxCooldown = maxCooldown * 20;
         this.x = x;
@@ -38,6 +40,7 @@ public class AbstractItemCooldown {
         this.resetWhenNoFightMode = resetWhenNoFightMode;
         this.setWhenNoFightMode = setWhenNoFightMode;
         this.canUseWhenNoFightMode = canUseWhenNoFightMode;
+        this.resetWhenLeftTheServer = resetWhenLeftTheServer;
     }
 
     public void render(DrawContext context) {
@@ -127,6 +130,10 @@ public class AbstractItemCooldown {
 
     public int getCooldown() {
         return cooldown;
+    }
+
+    public boolean isResetWhenLeftTheServer() {
+        return resetWhenLeftTheServer;
     }
 
     public void setCooldown(int cooldown) {

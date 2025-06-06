@@ -62,9 +62,9 @@ public class ConfigData {
         holyWorldItems.add(VanillaItemCooldown.builder(Items.ENCHANTED_GOLDEN_APPLE).setPos(-50, -100).canUseWhenNoFightMode(true).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.GOLDEN_APPLE).setPos(-50, -70).setWhenNoFightMode(false).canUseWhenNoFightMode(true).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.CHORUS_FRUIT).setMaxCooldown(15).setPos(-25, -70).hasCustomCooldown(true).setWhenNoFightMode(false).canUseWhenNoFightMode(true).build());
-        holyWorldItems.add(VanillaItemCooldown.builder(Items.PRISMARINE_SHARD).setPos(-25, -100).build());
-        holyWorldItems.add(VanillaItemCooldown.builder(Items.POPPED_CHORUS_FRUIT).setPos(0, -100).build());
-        holyWorldItems.add(VanillaItemCooldown.builder(Items.NETHER_STAR).setPos(25, -100).build());
+        holyWorldItems.add(VanillaItemCooldown.builder(Items.PRISMARINE_SHARD).setPos(-25, -100).resetWhenLeftTheServer(false).build());
+        holyWorldItems.add(VanillaItemCooldown.builder(Items.POPPED_CHORUS_FRUIT).setPos(0, -100).resetWhenLeftTheServer(false).build());
+        holyWorldItems.add(VanillaItemCooldown.builder(Items.NETHER_STAR).setPos(25, -100).resetWhenLeftTheServer(false).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.JACK_O_LANTERN).setPos(75, -100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.SNOWBALL).setPos(50, -100).build());
         holyWorldItems.add(VanillaItemCooldown.builder(Items.ENDER_PEARL).setPos(0, -70).build());

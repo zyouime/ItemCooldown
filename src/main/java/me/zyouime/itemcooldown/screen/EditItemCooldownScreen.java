@@ -44,6 +44,7 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
         this.setWhenNoFightMode = item.isSetWhenNoFightMode();
         this.resetWhenNoFightMode = item.isResetWhenNoFightMode();
         this.canUseWhenNoFightMode = item.isCanUseWhenNoFightMode();
+        this.resetWhenLeftTheServer = item.isResetWhenLeftTheServer();
         for (int index = 0; index < itemTypes.length; index++) {
             if (itemTypes[index] == itemType) {
                 this.i = index;
@@ -64,6 +65,7 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
                                 .setWhenNoFightMode(setWhenNoFightMode)
                                 .resetWhenNoFightMode(resetWhenNoFightMode)
                                 .canUseWhenNoFightMode(canUseWhenNoFightMode)
+                                .resetWhenLeftTheServer(resetWhenLeftTheServer)
                                 .build();
                     } else {
                         modifiedItem = CustomItemCooldown.builder(item.getItem().getItem())
@@ -73,14 +75,15 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
                                 .canUseWhenNoFightMode(canUseWhenNoFightMode)
                                 .resetWhenNoFightMode(resetWhenNoFightMode)
                                 .setNbt(((CustomItemCooldown) item).nbt.toString())
+                                .resetWhenLeftTheServer(resetWhenLeftTheServer)
                                 .build();
                     }
                     List<AbstractItemCooldown> list = settings.items.getValue().get(settings.selectedCategory.getValue());
                     list.set(list.indexOf(item), modifiedItem);
                     close();
-                }).dimensions(centerX - 160, centerY + 100, BUTTON_WIDTH, BUTTON_HEIGHT).build();
+                }).dimensions(centerX - 160, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
         ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close())
-                .dimensions(centerX + 10, centerY + 100, BUTTON_WIDTH, BUTTON_HEIGHT)
+                .dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT)
                 .build();
         this.addDrawableChild(saveAndExitButton);
         this.addDrawableChild(cancelAndExit);

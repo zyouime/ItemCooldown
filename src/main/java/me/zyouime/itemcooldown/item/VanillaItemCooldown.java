@@ -12,7 +12,7 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
     private boolean hasCustomCooldown;
 
     private VanillaItemCooldown(Builder builder) {
-        super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode);
+        super(builder.item, builder.maxCooldown, builder.x, builder.y, builder.resetWhenNoFightMode, builder.setWhenNoFightMode, builder.canUseWhenNoFightMode, builder.resetWhenLeftTheServer);
         this.hasCustomCooldown = builder.hasCustomCooldown;
     }
 
@@ -49,6 +49,7 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
         //если есть кастом кулдаун помимо ванилки, тогда этот параметр влияет
         private boolean setWhenNoFightMode = true;
         private boolean canUseWhenNoFightMode;
+        private boolean resetWhenLeftTheServer = true;
 
         public Builder(ItemStack item) {
             this.item = item;
@@ -72,6 +73,11 @@ public class VanillaItemCooldown extends AbstractItemCooldown {
 
         public Builder setY(float y) {
             this.y = y;
+            return this;
+        }
+
+        public Builder resetWhenLeftTheServer(boolean resetWhenLeftTheServer) {
+            this.resetWhenLeftTheServer = resetWhenLeftTheServer;
             return this;
         }
 
