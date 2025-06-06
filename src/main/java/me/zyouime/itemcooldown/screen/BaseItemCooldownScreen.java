@@ -90,7 +90,8 @@ public abstract class BaseItemCooldownScreen extends Screen {
         resetWhenNoFightModeButton = createOptionButton(-50, "ResetWhenNoFightMode", () -> this.resetWhenNoFightMode, newValue -> resetWhenNoFightMode = newValue, Text.literal("Выберите, если после режима боя кд сбрасывается"
                         + "\nПример: вы использовали предмет за 5 сек до конца режима боя, на него навесилось кд 20 сек,"
                         + "\nно после выхода из режима боя кд сбросился, и войдя снова в него, вы можете использовать предмет"));
-        setWhenNoFightModeButton = createOptionButton(-20, "SetWhenNoFightMode", () -> this.setWhenNoFightMode, newValue -> setWhenNoFightMode = newValue, Text.literal("Выберите, если кд на предмет устанавливается при каждом использовании, даже если вы не в пвп"));
+        setWhenNoFightModeButton = createOptionButton(-20, "SetWhenNoFightMode", () -> this.setWhenNoFightMode, newValue -> setWhenNoFightMode = newValue, Text.literal("Выберите, если кд на предмет устанавливается при каждом использовании, даже если вы не в пвп"
+                + "\n(Для ванильных предметов этот параметр влияет только если он имеет HasCustomCooldown)"));
         canUseWhenNoFightModeButton = createOptionButton(10, "CanUseWhenNoFightMode", () -> this.canUseWhenNoFightMode, newValue -> canUseWhenNoFightMode = newValue, Text.literal("Выберите, если после выхода из режима боя вы можете использовать предмет,"
                         + " но кд при этом не убирается, и войдя в бой снова, будет сразу же кд"));
         hasCustomCooldownButton = createOptionButton(70, "HasCustomCooldown", () -> this.hasCustomCooldown, newValue -> {

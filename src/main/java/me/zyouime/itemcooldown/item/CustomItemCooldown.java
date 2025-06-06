@@ -35,7 +35,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             NbtCompound compound = usedItem.copy().getNbt();
             if (compound == null) return false;
             NbtCompound itemNbt = this.nbt;
-            NbtHelper.prepareKeys(compound, itemNbt);
+            NbtHelper.removeExtraKeys(compound);
             if (itemNbt.equals(compound) && !this.isDynamicNbt()) {
                 boolean canSetCd = this.isSetWhenNoFightMode() || EventManager.isPvP();
                 if (canSetCd) {
