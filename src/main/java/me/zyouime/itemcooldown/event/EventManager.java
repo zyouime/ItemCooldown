@@ -5,19 +5,18 @@ import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.mixin.BossBarHudAccessor;
 import me.zyouime.itemcooldown.screen.MainScreen;
+import me.zyouime.itemcooldown.setting.CategorySetting;
+import me.zyouime.itemcooldown.setting.ItemsSetting;
 import me.zyouime.itemcooldown.util.CooldownManager;
-import me.zyouime.itemcooldown.util.NbtHelper;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 
@@ -28,28 +27,38 @@ import java.util.Map;
 public class EventManager {
 
     private static final ItemCooldown itemCooldown = ItemCooldown.getInstance();
+    private static final ItemsSetting itemsSetting = itemCooldown.settings.items;
+    private static final CategorySetting selectedCategorySetting = itemCooldown.settings.selectedCategory;
     private static final String[] PVP_TYPES = new String[]{"режим боя", "пвп", "pvp"};
-    private static final Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemCooldown.settings.items.getValue();
-    private static final ConfigData.Category selectedCategory = itemCooldown.settings.selectedCategory.getValue();
 
-    private static void hudRenderEvent() {
-        HudRenderCallback.EVENT.register(((drawContext, tickDelta) -> {
-            if (items.get(selectedCategory) == null) return;
+    public static void registerEvents() {
+        registerHudRenderEvent();
+        registerTickEvent();
+        registerJoinEvent();
+        registerUseItemEvent();
+    }
+
+    private static void registerHudRenderEvent() {
+        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
+            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
             if (!itemCooldown.settings.enabled.getValue()) return;
+            if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
                     item.render(drawContext);
                 }
             }
-        }));
+        });
     }
 
-    private static void tickEvent() {
+    private static void registerTickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (itemCooldown.OPEN_SETTINGS.wasPressed()) {
                 client.setScreen(new MainScreen(client.currentScreen));
             }
-            if (items.get(selectedCategory) == null) return;
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
+            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() >= 0) item.tick();
                 if (item.isResetWhenNoFightMode() && !isPvP()) {
@@ -59,25 +68,20 @@ public class EventManager {
         });
     }
 
-    private static void joinEvent() {
+    private static void registerJoinEvent() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            if (items.get(selectedCategory) == null) return;
-            for (AbstractItemCooldown item : items.get(selectedCategory)) {
+            Map<ConfigData.Category, List<AbstractItemCooldown>> items = itemsSetting.getValue();
+            ConfigData.Category selectedCategory = selectedCategorySetting.getValue();
+            List<AbstractItemCooldown> cooldownItems = items.get(selectedCategory);
+            for (AbstractItemCooldown item : cooldownItems) {
                 item.setCooldown(0);
             }
         });
     }
 
-    private static void useItemEvent() {
-        UseItemCallback.EVENT.register(((player, world, hand) -> useItem(player, hand)));
-        UseBlockCallback.EVENT.register(((player, world, hand, hitResult) -> useItem(player, hand).getResult()));
-    }
-
-    public static void registerEvents() {
-        hudRenderEvent();
-        tickEvent();
-        joinEvent();
-        useItemEvent();
+    private static void registerUseItemEvent() {
+        UseItemCallback.EVENT.register((player, world, hand) -> useItem(player, hand));
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> useItem(player, hand).getResult());
     }
 
     public static boolean isPvP() {

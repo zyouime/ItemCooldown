@@ -10,10 +10,9 @@ import java.util.Map;
 
 public class CooldownManager {
 
-    private static final Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
-    private static final ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
-
     public static void setCooldownIfNeeded(ItemStack usedItem) {
+        Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
+        ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
         if (items.get(selectedCategory) == null) return;
         for (AbstractItemCooldown item : items.get(selectedCategory)) {
             if (item.shouldSetCooldown(usedItem)) return;
