@@ -19,7 +19,7 @@ public abstract class BaseItemCooldownScreen extends Screen {
     protected final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
     protected int centerX, centerY;
     protected final ItemTypes[] itemTypes = new ItemTypes[]{ItemTypes.VANILLA, ItemTypes.CUSTOM};
-    protected int i = 0;
+    protected int i;
     protected ItemTypes itemType;
     protected boolean resetWhenNoFightMode;
     protected boolean setWhenNoFightMode;
@@ -79,14 +79,11 @@ public abstract class BaseItemCooldownScreen extends Screen {
                     itemType = itemTypes[i];
                     setWidgetsActive();
                     press.setMessage(setItemType());
-                })
-                .dimensions(centerX - BUTTON_WIDTH / 2, centerY - 80, BUTTON_WIDTH, BUTTON_HEIGHT)
-                .build();
+                }).dimensions(centerX - BUTTON_WIDTH / 2, centerY - 80, BUTTON_WIDTH, BUTTON_HEIGHT).build();
         itemTypeButton.setTooltip(Tooltip.of(Text.literal(
                 "Выберите тип предмета"
                         + "\nVanilla - это те, которые имеют ванильный кулдаун (серенькое такое поверх предмета, например трапка на холике/фт)"
-                        + "\nCustom - это те, которые имеют кастомный кулдаун (например как исцеление на холике) и визуально не показывается"
-        )));
+                        + "\nCustom - это те, которые имеют кастомный кулдаун (например как исцеление на холике) и визуально не показывается")));
         resetWhenNoFightModeButton = createOptionButton(-50, "ResetWhenNoFightMode", () -> this.resetWhenNoFightMode, newValue -> resetWhenNoFightMode = newValue, Text.literal("Выберите, если после режима боя кд сбрасывается"
                         + "\nПример: вы использовали предмет за 5 сек до конца режима боя, на него навесилось кд 20 сек,"
                         + "\nно после выхода из режима боя кд сбросился, и войдя снова в него, вы можете использовать предмет"));

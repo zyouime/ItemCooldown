@@ -30,10 +30,14 @@ public class CustomItemCooldown extends AbstractItemCooldown {
 
     @Override
     public boolean shouldSetCooldown(ItemStack usedItem) {
-        if (this.getCooldown() > 0) return false;
+        if (this.getCooldown() > 0) {
+            return false;
+        }
         if (this.nbt != null) {
             NbtCompound compound = usedItem.copy().getNbt();
-            if (compound == null) return false;
+            if (compound == null) {
+                return false;
+            }
             NbtCompound itemNbt = this.nbt;
             NbtHelper.removeExtraKeys(compound);
             if (itemNbt.equals(compound) && !this.isDynamicNbt()) {
@@ -59,14 +63,6 @@ public class CustomItemCooldown extends AbstractItemCooldown {
         ItemStack itemStack = super.getItem();
         itemStack.setNbt(this.nbt);
         return itemStack;
-    }
-
-    public void setNbt(NbtCompound nbt) {
-        this.nbt = nbt;
-    }
-
-    public void setDynamicNbt(boolean dynamicNbt) {
-        this.dynamicNbt = dynamicNbt;
     }
 
     public static Builder builder(Item item) {

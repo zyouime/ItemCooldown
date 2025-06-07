@@ -1,10 +1,12 @@
 package me.zyouime.itemcooldown.mixin;
 
 import me.zyouime.itemcooldown.ItemCooldown;
+import me.zyouime.itemcooldown.util.CooldownManager;
 import me.zyouime.itemcooldown.util.UseItem;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,14 +29,14 @@ public abstract class LivingEntityMixin implements UseItem {
     @Inject(method = "consumeItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;finishUsing(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;", shift = At.Shift.BEFORE))
     private void consumeItem(CallbackInfo ci) {
         if (isClientPlayerAndIfEnabled()) {
-            this.prevItem = this.activeItemStack.copy();
+            prevItem = activeItemStack.copy();
         }
     }
 
-    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;)V", at = @At("RETURN"))
-    private void swingHand(Hand hand, CallbackInfo ci) {
+    @Inject(method = "swingHand(Lnet/minecraft/util/Hand;Z)V", at = @At("RETURN"))
+    private void swingHand(Hand hand, boolean fromServerPlayer, CallbackInfo ci) {
         if (isClientPlayerAndIfEnabled()) {
-            this.prevItem = this.getStackInHand(hand).copy();
+            prevItem = this.getStackInHand(hand).copy();
         }
     }
 
@@ -46,6 +48,11 @@ public abstract class LivingEntityMixin implements UseItem {
     @Override
     public ItemStack getItem() {
         return this.prevItem;
+    }
+
+    @Override
+    public void setItem(ItemStack item) {
+        this.prevItem = item;
     }
 
     @Override

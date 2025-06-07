@@ -79,9 +79,7 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
                     settings.items.getValue().get(settings.selectedCategory.getValue()).add(newItem);
                     close();
                 }).dimensions(centerX - 160, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
-        ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close())
-                .dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT)
-                .build();
+        ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close()).dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
         this.addDrawableChild(saveAndExitButton);
         this.addDrawableChild(cancelAndExit);
     }

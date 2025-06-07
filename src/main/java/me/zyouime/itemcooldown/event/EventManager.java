@@ -4,14 +4,17 @@ import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.mixin.BossBarHudAccessor;
+import me.zyouime.itemcooldown.mixin.LivingEntityMixin;
 import me.zyouime.itemcooldown.screen.MainScreen;
 import me.zyouime.itemcooldown.util.CooldownManager;
+import me.zyouime.itemcooldown.util.UseItem;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -87,10 +90,16 @@ public class EventManager {
     }
 
     private static TypedActionResult<ItemStack> useItem(PlayerEntity player, Hand hand) {
-        ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
-            CooldownManager.setCooldownIfNeeded(itemStack);
+        ClientPlayerEntity clientPlayer = MinecraftClient.getInstance().player;
+        if (clientPlayer != null) {
+            ItemStack itemStack = clientPlayer.getStackInHand(hand).copy();
+            if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
+                if (clientPlayer instanceof UseItem clientPlayer1) {
+                    clientPlayer1.setItem(itemStack);
+                    System.out.println("Use " + itemStack);
+                }
+            }
         }
-        return TypedActionResult.pass(itemStack);
+        return TypedActionResult.pass(player.getStackInHand(hand));
     }
 }
