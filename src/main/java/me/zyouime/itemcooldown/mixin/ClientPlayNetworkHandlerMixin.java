@@ -14,13 +14,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.CooldownUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
-
 
     @Inject(method = "onCooldownUpdate", at = @At("RETURN"))
     private void onCooldownUpdate(CooldownUpdateS2CPacket packet, CallbackInfo ci) {
@@ -40,16 +40,26 @@ public abstract class ClientPlayNetworkHandlerMixin {
         }
     }
 
-    @Inject(method = "onScreenHandlerSlotUpdate", at = @At("HEAD"))
+    @Inject(method = "onScreenHandlerSlotUpdate", at = @At("RETURN"))
     private void onScreenHandlerSlotUpdate(ScreenHandlerSlotUpdateS2CPacket packet, CallbackInfo ci) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
+            return;
+        }
+        if (packet.getSyncId() != player.currentScreenHandler.syncId) {
+            return;
+        }
+        int slot = packet.getSlot();
+        if (slot < 36 || slot > 44) {
             return;
         }
         if (player instanceof UseItem clientPlayer) {
             ItemStack updatedItem = packet.getItemStack();
             ItemStack usedItem = clientPlayer.getItem();
             if (usedItem == null) {
+                return;
+            }
+            if (clientPlayer.getSlot() != slot) {
                 return;
             }
             if (isOver(updatedItem)) {
@@ -65,16 +75,16 @@ public abstract class ClientPlayNetworkHandlerMixin {
             if (updatedItemNbt == null || usedItemNbt == null) {
                 return;
             }
-            if (usedItemNbt.equals(updatedItemNbt)) {
+            if (usedItemNbt.equals(updatedItemNbt) && updatedItem.getCount() + 1 == usedItem.getCount()) {
                 CooldownManager.setCooldownIfNeeded(usedItem);
             }
             clientPlayer.clearItem();
         }
     }
 
+    @Unique
     private boolean isOver(ItemStack updatedItem) {
         return updatedItem.isOf(Items.AIR) || updatedItem.isOf(Items.GLASS_BOTTLE);
     }
-
 }
 
