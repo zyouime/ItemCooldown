@@ -18,6 +18,7 @@ public class CooldownManager {
         }
         for (AbstractItemCooldown item : items.get(selectedCategory)) {
             if (item.shouldSetCooldown(usedItem)) {
+                System.out.println("set cooldown");
                 return;
             }
         }

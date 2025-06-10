@@ -70,8 +70,6 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             if (usageItem != null) {
                 if (ItemStack.areEqual(usageItem, itemStack)) {
                     setItem(itemStack);
-                } else {
-                    usageItem = itemStack;
                 }
             } else {
                 usageItem = itemStack;
@@ -79,6 +77,12 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
             }
         }
         super.tickItemStackUsage(stack);
+    }
+
+    @Override
+    public void stopUsingItem() {
+        usageItem = null;
+        super.stopUsingItem();
     }
 
     @Unique
