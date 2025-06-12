@@ -82,9 +82,9 @@ public class MainScreen extends Screen {
 
     @Override
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
-        this.renderBackgroundTexture(0);
-        RenderHelper.drawTexture(matrixStack, width - 37, height - 37, 27, 27, 0, 0, 128, 128, 128, 128, TELEGRAM);
+        this.renderBackground(matrixStack);
         listWidgets.forEach(w -> w.render(matrixStack, mouseX, mouseY, delta));
+        RenderHelper.drawTexture(matrixStack, width - 37, height - 37, 27, 27, 0, 0, 128, 128, 128, 128, TELEGRAM);
         super.render(matrixStack, mouseX, mouseY, delta);
     }
 

@@ -61,6 +61,10 @@ public class RenderHelper {
     public static void drawTexture(MatrixStack matrixStack, float x, float y, float width, float height, float u, float v, float regionWidth, float regionHeight, float textureWidth, float textureHeight, Identifier texture) {
         MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
         Matrix4f matrix4f = matrixStack.peek().getModel();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
         bufferBuilder.vertex(matrix4f, x, y, 0).texture(u / textureHeight, v / textureHeight).next();
@@ -68,6 +72,7 @@ public class RenderHelper {
         bufferBuilder.vertex(matrix4f, x + width, y + height, 0).texture((u + regionWidth) / textureWidth, (v + regionHeight) / textureHeight).next();
         bufferBuilder.vertex(matrix4f, x + width, y, 0).texture((u + regionWidth) / textureWidth, v / textureHeight).next();
         tessellator.draw();
+        RenderSystem.disableBlend();
     }
 
 
