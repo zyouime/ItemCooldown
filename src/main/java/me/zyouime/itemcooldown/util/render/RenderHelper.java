@@ -1,18 +1,23 @@
 package me.zyouime.itemcooldown.util.render;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.crash.CrashException;
-import net.minecraft.util.crash.CrashReport;
-import net.minecraft.util.crash.CrashReportSection;
-import org.joml.Matrix4f;
+import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Matrix4f;
+import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -22,73 +27,96 @@ public class RenderHelper {
     public static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
     public static void drawRect(MatrixStack matrixStack, float x, float y, float width, float height, Color color) {
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
+        setupRender();
+        Matrix4f matrix4f = matrixStack.peek().getModel();
         float r = color.getRed() / 255f;
         float g = color.getGreen() / 255f;
         float b = color.getBlue() / 255f;
         float a = color.getAlpha() / 255f;
         BufferBuilder vertexConsumer = tessellator.getBuffer();
-        vertexConsumer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        vertexConsumer.begin(7, VertexFormats.POSITION_COLOR);
         vertexConsumer.vertex(matrix4f, x, y, 0).color(r, g, b, a).next();
         vertexConsumer.vertex(matrix4f, x, y + height, 0).color(r, g, b, a).next();
         vertexConsumer.vertex(matrix4f,x + width, y + height, 0).color(r, g, b, a).next();
         vertexConsumer.vertex(matrix4f,x + width, y, 0).color(r, g, b, a).next();
-        tessellator.draw();
-        RenderSystem.disableBlend();
+        endRender();
     }
 
-    public static void drawCenteredXYText(DrawContext context, float x, float y, float scale, String text, Color color) {
-        drawText(context, x - (textRenderer.getWidth(text) / 2f * scale), y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
+    public static void drawCenteredXYText(MatrixStack matrixStack, float x, float y, float scale, String text, Color color) {
+        drawText(matrixStack, x - (textRenderer.getWidth(text) / 2f * scale), y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
     }
 
 
-    public static void drawCenteredYText(DrawContext context, float x, float y, float scale, String text, Color color) {
-        drawText(context, x, y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
+    public static void drawCenteredYText(MatrixStack matrixStack, float x, float y, float scale, String text, Color color) {
+        drawText(matrixStack, x, y + (textRenderer.fontHeight / 2f * scale), scale, text, color);
     }
 
-    public static void drawText(DrawContext context, float x, float y, float scale, String text, Color color) {
-        MatrixStack matrixStack = context.getMatrices();
+    public static void drawText(MatrixStack matrixStack, float x, float y, float scale, String text, Color color) {
         matrixStack.push();
         matrixStack.scale(scale, scale, scale);
-        textRenderer.draw(text, x / scale, y / scale, color.getRGB(), false, matrixStack.peek().getPositionMatrix(), context.getVertexConsumers(), TextRenderer.TextLayerType.NORMAL,0, 0xF000F0, textRenderer.isRightToLeft());
-        context.draw();
+        textRenderer.draw(matrixStack, text, x / scale, y / scale, color.getRGB());
         matrixStack.pop();
     }
 
-    public static void drawItem(DrawContext context, ItemStack stack, float x, float y) {
-        if (stack.isEmpty()) {
-            return;
-        }
-        MatrixStack matrices = context.getMatrices();
-        MinecraftClient client = MinecraftClient.getInstance();
-        BakedModel bakedModel = client.getItemRenderer().getModel(stack, client.world, client.player, 0);
+    public static void drawTexture(MatrixStack matrixStack, float x, float y, float width, float height, float u, float v, float regionWidth, float regionHeight, float textureWidth, float textureHeight, Identifier texture) {
+        MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
+        Matrix4f matrix4f = matrixStack.peek().getModel();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+        bufferBuilder.vertex(matrix4f, x, y, 0).texture(u / textureHeight, v / textureHeight).next();
+        bufferBuilder.vertex(matrix4f, x, y + height, 0).texture(u / textureWidth, (v + regionHeight) / textureHeight).next();
+        bufferBuilder.vertex(matrix4f, x + width, y + height, 0).texture((u + regionWidth) / textureWidth, (v + regionHeight) / textureHeight).next();
+        bufferBuilder.vertex(matrix4f, x + width, y, 0).texture((u + regionWidth) / textureWidth, v / textureHeight).next();
+        tessellator.draw();
+    }
+
+
+    public static void drawItem(MatrixStack matrices, ItemStack stack, float x, float y) {
+        if (stack.isEmpty()) return;
         matrices.push();
-        matrices.translate(x + 8, y + 8, 150);
-        try {
-            matrices.multiplyPositionMatrix(new Matrix4f().scaling(1.0f, -1.0f, 1.0f));
-            matrices.scale(16.0f, 16.0f, 16.0f);
-            boolean bl = !bakedModel.isSideLit();
-            if (bl) {
-                DiffuseLighting.disableGuiDepthLighting();
-            }
-            client.getItemRenderer().renderItem(stack, ModelTransformationMode.GUI, false, matrices, context.getVertexConsumers(), 0xF000F0, OverlayTexture.DEFAULT_UV, bakedModel);
-            context.draw();
-            if (bl) {
-                DiffuseLighting.enableGuiDepthLighting();
-            }
-        } catch (Throwable throwable) {
-            CrashReport crashReport = CrashReport.create(throwable, "Rendering item");
-            CrashReportSection crashReportSection = crashReport.addElement("Item being rendered");
-            crashReportSection.add("Item Type", () -> String.valueOf(stack.getItem()));
-            crashReportSection.add("Item Damage", () -> String.valueOf(stack.getDamage()));
-            crashReportSection.add("Item NBT", () -> String.valueOf(stack.getNbt()));
-            crashReportSection.add("Item Foil", () -> String.valueOf(stack.hasGlint()));
-            throw new CrashException(crashReport);
+        MinecraftClient.getInstance().getTextureManager().bindTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
+        MinecraftClient.getInstance().getTextureManager().getTexture(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).setFilter(false, false);
+        RenderSystem.enableRescaleNormal();
+        RenderSystem.enableAlphaTest();
+        RenderSystem.defaultAlphaFunc();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        matrices.translate(x, y, 150);
+        matrices.translate(8.0F, 8.0F, 0.0F);
+        matrices.scale(1.0F, -1.0F, 1.0F);
+        matrices.scale(16.0F, 16.0F, 16.0F);
+        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+        BakedModel model = MinecraftClient.getInstance().getItemRenderer().getHeldItemModel(stack, null, null);
+        boolean bl = !model.isSideLit();
+        if (bl) {
+            DiffuseLighting.disableGuiDepthLighting();
         }
+        MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.GUI, false, matrices, immediate, 15728880, OverlayTexture.DEFAULT_UV, model);
+        immediate.draw();
+        RenderSystem.enableDepthTest();
+        if (bl) {
+            DiffuseLighting.enableGuiDepthLighting();
+        }
+
+        RenderSystem.disableAlphaTest();
+        RenderSystem.disableRescaleNormal();
         matrices.pop();
+    }
+
+    public static void enableScissor(int x1, int y1, int x2, int y2) {
+        Window window = MinecraftClient.getInstance().getWindow();
+        int fbHeight = window.getFramebufferHeight();
+        double scale = window.getScaleFactor();
+        int ox = (int) Math.floor(x1 * scale);
+        int oy = (int) Math.floor(fbHeight - (y2 * scale));
+        int w  = (int) Math.ceil((x2 - x1) * scale);
+        int h  = (int) Math.ceil((y2 - y1) * scale);
+        RenderSystem.enableScissor(ox, oy, w, h);
+    }
+
+    public static void disableScissor() {
+        RenderSystem.disableScissor();
     }
 
     public static void drawRoundedRect(MatrixStack matrixStack,float x, float y, float width, float height, float radius, Color color) {
@@ -103,25 +131,51 @@ public class RenderHelper {
         drawQuadrantCircle(matrixStack, x + width - radius, y + height - radius, radius, color, 1);
     }
 
-    public static void drawQuadrantCircle(MatrixStack matrixStack, float x, float y, float radius, Color color, int mode) {
-        RenderSystem.setShader(GameRenderer::getPositionColorProgram);
+    private static void setupRender() {
+        RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        Tessellator tessellator = Tessellator.getInstance();
+        RenderSystem.disableAlphaTest();
+        RenderSystem.shadeModel(GL11.GL_SMOOTH);
+    }
+
+    private static void endRender() {
+        tessellator.draw();
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
+        RenderSystem.shadeModel(GL11.GL_FLAT);
+        RenderSystem.enableAlphaTest();
+    }
+
+    public static void drawQuadrantCircle(MatrixStack matrixStack, float x, float y, float radius, Color color, int mode) {
+        setupRender();
         BufferBuilder vertexConsumer = tessellator.getBuffer();
-        Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
+        Matrix4f matrix4f = matrixStack.peek().getModel();
         float r = color.getRed() / 255f;
         float g = color.getGreen() / 255f;
         float b = color.getBlue() / 255f;
         float a = color.getAlpha() / 255f;
-        vertexConsumer.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+        vertexConsumer.begin(6, VertexFormats.POSITION_COLOR);
         vertexConsumer.vertex(matrix4f, x, y, 0).color(r, g, b, a).next();
-        float baseAngle = switch (mode) {
-            case 2 -> (float) Math.PI / 2;
-            case 3 -> (float) Math.PI;
-            case 4 -> (float) (3 * Math.PI / 2);
-            default -> 0;
-        };
+        float baseAngle;
+        switch (mode) {
+            case 2: {
+                baseAngle = (float) Math.PI / 2;
+                break;
+            }
+            case 3: {
+                baseAngle = (float) Math.PI;
+                break;
+            }
+            case 4: {
+                baseAngle = (float) (3 * Math.PI / 2);
+                break;
+            }
+            default: {
+                baseAngle = 0;
+                break;
+            }
+        }
         double angleStep = 0.10471975511965977D;
         for (int i = 0; i <= 15; i++) {
             float angle = baseAngle + (float) (angleStep * i);
@@ -129,7 +183,6 @@ public class RenderHelper {
             float y1 = (float) (y + radius * Math.cos(angle));
             vertexConsumer.vertex(matrix4f, x1, y1, 0).color(r, g, b, a).next();
         }
-        tessellator.draw();
-        RenderSystem.disableBlend();
+        endRender();
     }
 }

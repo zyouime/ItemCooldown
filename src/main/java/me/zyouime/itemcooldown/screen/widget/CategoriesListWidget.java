@@ -1,15 +1,16 @@
 package me.zyouime.itemcooldown.screen.widget;
 
 import me.zyouime.itemcooldown.ItemCooldown;
+import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.screen.MainScreen;
-import me.zyouime.itemcooldown.screen.widget.element.CategoryCustomElement;
 import me.zyouime.itemcooldown.setting.CategorySetting;
+import me.zyouime.itemcooldown.util.render.RenderHelper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
+import java.util.Objects;
 
 public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.Elements> {
 
@@ -20,15 +21,15 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
 
     public CategoriesListWidget(MinecraftClient client, int width, int height, int top, int bottom, int itemHeight, MainScreen screen) {
         super(client, width, height, top, bottom, itemHeight);
-        this.addEntry(new Elements(new CategoryCustomElement(categorySetting.getValue())));
+        this.addEntry(new Elements(categorySetting.getValue()));
         this.screen = screen;
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        context.enableScissor(left, top, right, bottom);
-        this.renderList(context, mouseX, mouseY, delta);
-        context.disableScissor();
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
+        RenderHelper.enableScissor(left, top, right, bottom);
+        this.renderList(matrixStack, 0, 0, mouseX, mouseY, delta);
+        RenderHelper.disableScissor();
     }
 
     @Override
@@ -37,8 +38,8 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
             if (elements.mouseClicked(mouseX, mouseY, button)) {
                 open = !open;
                 if (!open) {
-                    categorySetting.setValue(elements.category.getCategory());
-                    this.children().get(0).category.setCategory(categorySetting.getValue());
+                    categorySetting.setValue(elements.getCategory());
+                    this.children().get(0).setCategory(categorySetting.getValue());
                     this.setScrollAmount(0);
                     this.screen.clearAndInit();
                 }
@@ -54,25 +55,26 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
     }
 
     @Override
-    protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
-        int i = this.left;
+    protected void renderList(MatrixStack matrices, int x, int y, int mouseX, int mouseY, float delta) {
+        int i = this.getRowLeft();
         int j = this.getRowWidth();
         int k = this.itemHeight - 4;
-        int l = open ? this.getEntryCount() : 1;
-        for (int m = 0; m < l; ++m) {
+        int l = this.getEntryCount();
+        for(int m = 0; m < (open ? l : 1); ++m) {
             int n = this.getRowTop(m);
-            if (m == 0) {
-                Elements entry = this.getEntry(m);
-                entry.category.setColor(Color.GREEN);
-            }
+            Elements entry = this.getEntry(m);
             int o = this.getRowBottom(m);
+            if (m == 0) {
+                entry.setColor(Color.GREEN);
+            }
             if (o < this.top || n > this.bottom) continue;
-            this.renderEntry(context, mouseX, mouseY, delta, m, i, n, j, k);
+            entry.render(matrices, m, n, i, j, k, mouseX, mouseY, this.isMouseOver(mouseX, mouseY) && Objects.equals(entry, entry), delta);
         }
     }
 
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {}
+    private int getRowBottom(int index) {
+        return this.getRowTop(index) + this.itemHeight;
+    }
 
     @Override
     public int addEntry(Elements entry) {
@@ -81,22 +83,35 @@ public class CategoriesListWidget extends EntryListWidget<CategoriesListWidget.E
 
     public static class Elements extends EntryListWidget.Entry<Elements> {
 
-        private final CategoryCustomElement category;
+        private ConfigData.Category category;
         private int x, y, width, height;
+        private Color color;
 
-        public Elements(CategoryCustomElement category) {
+        public Elements(ConfigData.Category category) {
             this.category = category;
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            category.updatePos(x, y);
+        public void render(MatrixStack matrixStack, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             this.x = x;
             this.y = y;
             this.width = entryWidth;
             this.height = entryHeight;
-            context.fillGradient(x, y, x + entryWidth, y + entryHeight, -1072689136, -804253680);
-            category.render(context, mouseX, mouseY, tickDelta);
+            RenderHelper.drawRect(matrixStack, x, y, width, height, new Color(0, 0, 0, 128));
+            RenderHelper.drawCenteredXYText(matrixStack, x + entryWidth  / 2f - 1, y + (entryHeight / 2f) - 8f, 0.9f, category.name, color == null ? Color.WHITE : color);
+
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
+        }
+
+        public ConfigData.Category getCategory() {
+            return category;
+        }
+
+        public void setCategory(ConfigData.Category category) {
+            this.category = category;
         }
 
         @Override

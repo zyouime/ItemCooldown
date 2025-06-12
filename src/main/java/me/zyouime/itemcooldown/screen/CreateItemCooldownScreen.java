@@ -3,11 +3,11 @@ package me.zyouime.itemcooldown.screen;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.CustomItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
+import me.zyouime.itemcooldown.screen.widget.CustomButtonWidget;
 import me.zyouime.itemcooldown.util.NbtHelper;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
@@ -24,10 +24,10 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
     @Override
     protected void init() {
         if (client.world == null) {
-            ButtonWidget exit = ButtonWidget.builder(Text.literal("Выйти"), press -> close())
+            CustomButtonWidget exit = CustomButtonWidget.builder(Text.of("Выйти"), press -> onClose())
                     .dimensions(width / 2 - 40, height / 2, 80, 20)
                     .build();
-            this.addDrawableChild(exit);
+            addButton(exit);
             return;
         }
         super.init();
@@ -42,14 +42,14 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
 
     @Override
     protected void createSaveAndExitWidgets() {
-        ButtonWidget saveAndExitButton = ButtonWidget.builder(Text.literal("Сохранить и выйти"), press -> {
+        CustomButtonWidget saveAndExitButton = CustomButtonWidget.builder(Text.of("Сохранить и выйти"), press -> {
                     ItemStack stackInHand = client.player.getStackInHand(Hand.MAIN_HAND);
                     if (stackInHand.isEmpty()) {
-                        close();
+                        onClose();
                         return;
                     }
-                    if (itemType == ItemTypes.CUSTOM && stackInHand.getNbt() == null) {
-                        close();
+                    if (itemType == ItemTypes.CUSTOM && stackInHand.getTag() == null) {
+                        onClose();
                         return;
                     }
                     AbstractItemCooldown newItem;
@@ -64,7 +64,7 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
                                 .resetWhenLeftTheServer(resetWhenLeftTheServer)
                                 .build();
                     } else {
-                        NbtCompound tag = stackInHand.getNbt().copy();
+                        NbtCompound tag = stackInHand.getTag().copy();
                         NbtHelper.removeExtraKeys(tag);
                         newItem = CustomItemCooldown.builder(stackInHand.getItem())
                                 .setPos(0, 0)
@@ -77,18 +77,18 @@ public class CreateItemCooldownScreen extends BaseItemCooldownScreen {
                                 .build();
                     }
                     settings.items.getValue().get(settings.selectedCategory.getValue()).add(newItem);
-                    close();
+                    onClose();
                 }).dimensions(centerX - 160, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
-        ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close()).dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
-        this.addDrawableChild(saveAndExitButton);
-        this.addDrawableChild(cancelAndExit);
+        CustomButtonWidget cancelAndExit = CustomButtonWidget.builder(Text.of("Отменить и выйти"), press -> onClose()).dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
+        addButton(saveAndExitButton);
+        addButton(cancelAndExit);
     }
 
     @Override
-    protected void renderMsg(DrawContext context) {
+    protected void renderMsg(MatrixStack matrixStack) {
         String text = client.world == null ? "Чтобы добавить предмет, вы должны быть на сервере!" : "Держите в основной руке предмет, который хотите добавить!!!";
         int yOffset = client.world == null ? 50 : 130;
-        RenderHelper.drawCenteredXYText(context, width / 2f, height / 2f - yOffset, 1.5f, text, Color.WHITE);
+        RenderHelper.drawCenteredXYText(matrixStack, width / 2f, height / 2f - yOffset, 1.5f, text, Color.WHITE);
     }
 }
 

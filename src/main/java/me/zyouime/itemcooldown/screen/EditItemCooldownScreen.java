@@ -3,16 +3,11 @@ package me.zyouime.itemcooldown.screen;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
 import me.zyouime.itemcooldown.item.CustomItemCooldown;
 import me.zyouime.itemcooldown.item.VanillaItemCooldown;
-import me.zyouime.itemcooldown.util.NbtHelper;
+import me.zyouime.itemcooldown.screen.widget.CustomButtonWidget;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
 
 import java.awt.*;
 import java.util.List;
@@ -34,8 +29,8 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
 
     @Override
     protected void initFields() {
-        if (item instanceof VanillaItemCooldown vanillaItemCooldown) {
-            this.hasCustomCooldown = vanillaItemCooldown.isHasCustomCooldown();
+        if (item instanceof VanillaItemCooldown) {
+            this.hasCustomCooldown = ((VanillaItemCooldown) item).isHasCustomCooldown();
             this.itemType = ItemTypes.VANILLA;
         } else {
             this.itemType = ItemTypes.CUSTOM;
@@ -55,7 +50,7 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
 
     @Override
     protected void createSaveAndExitWidgets() {
-        ButtonWidget saveAndExitButton = ButtonWidget.builder(Text.literal("Сохранить и выйти"), press -> {
+        CustomButtonWidget saveAndExitButton = CustomButtonWidget.builder(Text.of("Сохранить и выйти"), press -> {
                     AbstractItemCooldown modifiedItem;
                     if (itemType == ItemTypes.VANILLA) {
                         modifiedItem = VanillaItemCooldown.builder(item.getItem().getItem())
@@ -80,16 +75,16 @@ public class EditItemCooldownScreen extends BaseItemCooldownScreen {
                     }
                     List<AbstractItemCooldown> list = settings.items.getValue().get(settings.selectedCategory.getValue());
                     list.set(list.indexOf(item), modifiedItem);
-                    close();
+                    onClose();
                 }).dimensions(centerX - 160, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
-        ButtonWidget cancelAndExit = ButtonWidget.builder(Text.literal("Отменить и выйти"), press -> close()).dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
-        this.addDrawableChild(saveAndExitButton);
-        this.addDrawableChild(cancelAndExit);
+        CustomButtonWidget cancelAndExit = CustomButtonWidget.builder(Text.of("Отменить и выйти"), press -> onClose()).dimensions(centerX + 10, centerY + 130, BUTTON_WIDTH, BUTTON_HEIGHT).build();
+        addButton(saveAndExitButton);
+        addButton(cancelAndExit);
     }
 
     @Override
-    protected void renderMsg(DrawContext context) {
-        RenderHelper.drawCenteredXYText(context, centerX, centerY - 130, 1.5f, "Редактирование предмета из категории " + settings.selectedCategory.getValue().name, Color.WHITE);
+    protected void renderMsg(MatrixStack matrixStack) {
+        RenderHelper.drawCenteredXYText(matrixStack, centerX, centerY - 130, 1.5f, "Редактирование предмета из категории " + settings.selectedCategory.getValue().name, Color.WHITE);
     }
 }
 
