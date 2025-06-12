@@ -4,7 +4,8 @@ import com.google.gson.annotations.Expose;
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.event.EventManager;
 import me.zyouime.itemcooldown.util.render.RenderHelper;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
@@ -43,12 +44,12 @@ public class AbstractItemCooldown {
         this.resetWhenLeftTheServer = resetWhenLeftTheServer;
     }
 
-    public void render(DrawContext context) {
+    public void render(MatrixStack matrixStack) {
         if (!visible) return;
-        MatrixStack matrixStack = context.getMatrices();
         float scale = ItemCooldown.getInstance().settings.scale.getValue();
-        float sWidth = context.getScaledWindowWidth();
-        float sHeight = context.getScaledWindowHeight();
+        Window window = MinecraftClient.getInstance().getWindow();
+        float sWidth = window.getScaledWidth();
+        float sHeight = window.getScaledHeight();
         float centerX = sWidth / 2f;
         float centerY = sHeight / 2f;
         float maxX = (sWidth / scale) - ICON_WIDTH;
@@ -60,12 +61,12 @@ public class AbstractItemCooldown {
         if (ItemCooldown.getInstance().settings.renderBackground.getValue()) {
             RenderHelper.drawRoundedRect(matrixStack, renderX, renderY, ICON_WIDTH, ICON_HEIGHT, 3, getBackgroundColor());
         }
-        RenderHelper.drawItem(context, this.getItem(), renderX + 2, renderY + 1);
+        RenderHelper.drawItem(matrixStack, this.getItem(), renderX + 2, renderY + 1);
         matrixStack.pop();
         int seconds = cooldown / 20;
         String text = String.valueOf(seconds);
         float textX = renderX * scale + (20 * scale - RenderHelper.textRenderer.getWidth(text) * (scale / 2f)) / 2f;
-        RenderHelper.drawCenteredYText(context, textX, (renderY + 17) * scale, scale / 2f, text, getTextColor());
+        RenderHelper.drawCenteredYText(matrixStack, textX, (renderY + 17) * scale, scale / 2f, text, getTextColor());
     }
 
     public void tick() {
@@ -74,10 +75,6 @@ public class AbstractItemCooldown {
 
     public ItemStack getItem() {
         return this.item;
-    }
-
-    public void setCount(int count) {
-        this.item.setCount(count);
     }
 
     public int getMaxCooldown() {

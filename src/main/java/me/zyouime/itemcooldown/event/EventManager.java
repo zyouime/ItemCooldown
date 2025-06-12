@@ -35,14 +35,14 @@ public class EventManager {
     }
 
     private static void registerHudRenderEvent() {
-        HudRenderCallback.EVENT.register((drawContext, tickDelta) -> {
+        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
             Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
             ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
             if (!ItemCooldown.getInstance().settings.enabled.getValue()) return;
             if (items.get(selectedCategory) == null) return;
             for (AbstractItemCooldown item : items.get(selectedCategory)) {
                 if (item.getCooldown() > 0) {
-                    item.render(drawContext);
+                    item.render(matrixStack);
                 }
             }
         });
@@ -51,7 +51,7 @@ public class EventManager {
     private static void registerTickEvent() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (ItemCooldown.getInstance().OPEN_SETTINGS.wasPressed()) {
-                client.setScreen(new MainScreen(client.currentScreen));
+                client.openScreen(new MainScreen(client.currentScreen));
             }
             Map<ConfigData.Category, List<AbstractItemCooldown>> items = ItemCooldown.getInstance().settings.items.getValue();
             ConfigData.Category selectedCategory = ItemCooldown.getInstance().settings.selectedCategory.getValue();
@@ -93,9 +93,9 @@ public class EventManager {
         ClientPlayerEntity clientPlayer = MinecraftClient.getInstance().player;
         if (clientPlayer != null) {
             ItemStack itemStack = clientPlayer.getStackInHand(hand).copy();
-            if (!itemStack.isFood() && !itemStack.isOf(Items.POTION) && !itemStack.isEmpty()) {
-                if (clientPlayer instanceof UseItem clientPlayer1) {
-                    clientPlayer1.setItem(itemStack);
+            if (!itemStack.isFood() && itemStack.getItem() != Items.POTION && !itemStack.isEmpty()) {
+                if (clientPlayer instanceof UseItem) {
+                    ((UseItem) clientPlayer).setItem(itemStack);
                 }
             }
         }

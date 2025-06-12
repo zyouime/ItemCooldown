@@ -34,7 +34,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
             return false;
         }
         if (this.nbt != null) {
-            NbtCompound compound = usedItem.copy().getNbt();
+            NbtCompound compound = usedItem.copy().getTag();
             if (compound == null) {
                 return false;
             }
@@ -61,7 +61,7 @@ public class CustomItemCooldown extends AbstractItemCooldown {
     @Override
     public ItemStack getItem() {
         ItemStack itemStack = super.getItem();
-        itemStack.setNbt(this.nbt);
+        itemStack.setTag(this.nbt);
         return itemStack;
     }
 

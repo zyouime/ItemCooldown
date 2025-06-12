@@ -3,12 +3,11 @@ package me.zyouime.itemcooldown.screen;
 import me.zyouime.itemcooldown.ItemCooldown;
 import me.zyouime.itemcooldown.config.ConfigData;
 import me.zyouime.itemcooldown.item.AbstractItemCooldown;
+import me.zyouime.itemcooldown.screen.widget.CustomButtonWidget;
 import me.zyouime.itemcooldown.screen.widget.CustomSliderWidget;
 import me.zyouime.itemcooldown.setting.BooleanSetting;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class PositionScreen extends Screen {
     private final ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
 
     public PositionScreen(Screen parent) {
-        super(Text.empty());
+        super(Text.of(""));
         this.parent = parent;
     }
 
@@ -41,34 +40,31 @@ public class PositionScreen extends Screen {
         centerX = width / 2f;
         centerY = height / 2f;
         CustomSliderWidget sliderWidget = new CustomSliderWidget((int) centerX - 115, height - 90, 120, 20, Text.of("Размеры иконок: "), 1, 3, settings.scale);
-        CustomSliderWidget indentSlider = new CustomSliderWidget((int) (centerX + 15), height - 90, 80, 20, Text.literal("Отступы: "), 0, 5, settings.indent);
-        indentSlider.setTooltip(Tooltip.of(Text.literal("Расстояние в пикселях, на котором будут находиться иконки при \"прилипании\"")));
-        ButtonWidget alignment = ButtonWidget.builder(getButtonMessage("Выравнивание", settings.alignment), press -> {
+        CustomSliderWidget indentSlider = new CustomSliderWidget((int) (centerX + 15), height - 90, 80, 20, Text.of("Отступы: "), 0, 5, settings.indent, "Расстояние в пикселях, на котором будут находиться иконки при \"прилипании\"");
+        CustomButtonWidget alignment = CustomButtonWidget.builder(getButtonMessage("Выравнивание", settings.alignment), press -> {
             settings.alignment.setValue(!settings.alignment.getValue());
             indentSlider.active = settings.alignment.getValue();
             press.setMessage(getButtonMessage("Выравнивание", settings.alignment));
-        }).dimensions((int) centerX - 100, height - 60, 120, 20).build();
-        alignment.setTooltip(Tooltip.of(Text.literal("Включите, если хотите, чтобы иконки \"прилипали\" друг к другу на выбранном отступе")));
-        ButtonWidget save = ButtonWidget.builder(Text.literal("Сохранить"), press -> this.close()).dimensions((int) centerX - 40, height - 30, 80, 20).build();
-        ButtonWidget renderBackground = ButtonWidget.builder(getButtonMessage("Фон", settings.renderBackground), press -> {
+        }).dimensions((int) centerX - 100, height - 60, 120, 20).tooltip("Включите, если хотите, чтобы иконки \"прилипали\" друг к другу на выбранном отступе").build();
+        CustomButtonWidget save = CustomButtonWidget.builder(Text.of("Сохранить"), press -> onClose()).dimensions((int) centerX - 40, height - 30, 80, 20).build();
+        CustomButtonWidget renderBackground = CustomButtonWidget.builder(getButtonMessage("Фон", settings.renderBackground), press -> {
             settings.renderBackground.setValue(!settings.renderBackground.getValue());
             press.setMessage(getButtonMessage("Фон", settings.renderBackground));
-        }).dimensions((int) centerX + 30, height - 60, 60, 20).build();
-        renderBackground.setTooltip(Tooltip.of(Text.literal("Задний фон иконок")));
-        this.addDrawableChild(indentSlider);
-        this.addDrawableChild(alignment);
-        this.addDrawableChild(save);
-        this.addDrawableChild(renderBackground);
-        this.addDrawableChild(sliderWidget);
+        }).dimensions((int) centerX + 30, height - 60, 60, 20).tooltip("Задний фон иконок").build();
+        addButton(indentSlider);
+        addButton(alignment);
+        addButton(save);
+        addButton(renderBackground);
+        addButton(sliderWidget);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
+        this.renderBackground(matrixStack);
         if (items.get(category) == null) return;
         scale = settings.scale.getValue();
-        items.get(category).forEach(aic -> aic.render(context));
-        super.render(context, mouseX, mouseY, delta);
+        items.get(category).forEach(aic -> aic.render(matrixStack));
+        super.render(matrixStack, mouseX, mouseY, delta);
     }
 
     @Override
@@ -141,7 +137,7 @@ public class PositionScreen extends Screen {
     }
 
     public static Text getButtonMessage(String option, BooleanSetting setting) {
-        return Text.literal(option + ": " + (setting.getValue() ? "§atrue" : "§cfalse"));
+        return Text.of(option + ": " + (setting.getValue() ? "§atrue" : "§cfalse"));
     }
 
     @Override
@@ -154,7 +150,7 @@ public class PositionScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        this.client.setScreen(parent);
+    public void onClose() {
+        this.client.openScreen(parent);
     }
 }

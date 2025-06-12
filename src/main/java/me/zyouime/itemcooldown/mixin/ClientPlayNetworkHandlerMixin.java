@@ -34,8 +34,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
         if (cooldown > 0) {
             ItemCooldown.Settings settings = ItemCooldown.getInstance().settings;
             settings.items.getValue().get(settings.selectedCategory.getValue()).forEach(ct -> {
-                if (ct instanceof VanillaItemCooldown vic && vic.getItem().getItem().equals(item) && vic.getCooldown() < cooldown) {
-                    vic.setCooldown(cooldown);
+                if (ct instanceof VanillaItemCooldown && ct.getItem().getItem().equals(item) && ct.getCooldown() < cooldown) {
+                    ct.setCooldown(cooldown);
                 }
             });
         }
@@ -54,7 +54,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
         if (slot < 36 || slot > 44) {
             return;
         }
-        if (player instanceof UseItem clientPlayer) {
+        if (player instanceof UseItem) {
+            UseItem clientPlayer = (UseItem) player;
             ItemStack updatedItem = packet.getItemStack();
             ItemStack usedItem = clientPlayer.getItem();
             if (usedItem == null) {
@@ -71,8 +72,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
             if (!ItemStack.areItemsEqual(usedItem, updatedItem)) {
                 return;
             }
-            NbtCompound usedItemNbt = usedItem.getNbt();
-            NbtCompound updatedItemNbt = updatedItem.getNbt();
+            NbtCompound usedItemNbt = usedItem.getTag();
+            NbtCompound updatedItemNbt = updatedItem.getTag();
             if (updatedItemNbt == null || usedItemNbt == null) {
                 return;
             }
@@ -92,7 +93,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Unique
     private boolean isOver(ItemStack updatedItem) {
-        return updatedItem.isOf(Items.AIR) || updatedItem.isOf(Items.GLASS_BOTTLE);
+        return updatedItem.getItem() == Items.AIR || updatedItem.getItem() == Items.GLASS_BOTTLE;
     }
 }
 

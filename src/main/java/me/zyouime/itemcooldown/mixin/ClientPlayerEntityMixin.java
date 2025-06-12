@@ -16,6 +16,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,6 +25,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ClientPlayerEntity.class, priority = 500)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity implements UseItem {
+
+    @Shadow public abstract boolean isUsingItem();
 
     @Unique
     private ItemStack prevItem;
@@ -40,7 +43,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
     public void swingHand(Hand hand, boolean fromServerPlayer) {
         if (ItemCooldown.getInstance().settings.enabled.getValue()) {
             ItemStack itemStack = this.getStackInHand(hand).copy();
-            if (!itemStack.isEmpty() && !itemStack.isOf(Items.POTION) && !itemStack.isFood()) {
+            if (!itemStack.isEmpty() && itemStack.getItem() != Items.POTION && !itemStack.isFood()) {
                 if (prevItem != null && !ItemStack.areItemsEqual(itemStack, prevItem)) {
                     setItem(itemStack);
                 } else if (prevItem == null) {
@@ -63,10 +66,10 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
         return super.dropItem(stack, throwRandomly, retainOwnership);
     }
 
-    @Override
-    protected void tickItemStackUsage(ItemStack stack) {
-        if (ItemCooldown.getInstance().settings.enabled.getValue()) {
-            ItemStack itemStack = stack.copy();
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tick()V", shift = At.Shift.AFTER))
+    private void onTick(CallbackInfo ci) {
+        if (this.isUsingItem() && ItemStack.areItemsEqual(this.getStackInHand(this.getActiveHand()), this.activeItemStack) && ItemCooldown.getInstance().settings.enabled.getValue()) {
+            ItemStack itemStack = this.activeItemStack.copy();
             if (usageItem != null) {
                 if (ItemStack.areEqual(usageItem, itemStack)) {
                     setItem(itemStack);
@@ -76,7 +79,6 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
                 setItem(itemStack);
             }
         }
-        super.tickItemStackUsage(stack);
     }
 
     @Override
@@ -94,7 +96,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Unique
     private void setUsedItemSlot(ItemStack itemStack) {
-        for (int i = 36; i <= 44; i++) {
+        for (int i = 36; i <= Math.min(44, this.currentScreenHandler.slots.size() - 1); i++) {
             if (ItemStack.areEqual(this.currentScreenHandler.slots.get(i).getStack(), itemStack)) {
                 usedSlot = i;
                 return;
